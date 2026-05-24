@@ -4,13 +4,31 @@
 
 ## Sources
 
-_(none yet)_
+- [[chatgpt-llm-based-project-workflow]] — ChatGPT analysis of multi-LLM research → llm-wiki → agentic coding pipeline
+- [[gemini-llm-wiki-multi-agent]] — Gemini comprehensive evaluation of LLM-Wiki in multi-agent dev
+- [[claude-multi-llm-research-synthesis-workflow]] — Claude assessment mapping workflow to Karpathy's pattern
 
 ## Concepts
 
-_(none yet)_
+- [[context-fragmentation]] — scattered, duplicated research as the core engineering problem
+- [[research-to-implementation-pipeline]] — unified 5-phase flow from multi-LLM research to agentic coding
+- [[compounding-knowledge-layer]] — persistent wiki artifact vs ephemeral RAG
+- [[llm-outputs-as-synthetic-sources]] — LLM exports are first-pass synthesis, not ground truth
+- [[semantic-deduplication]] — dedup via embeddings, two-stage analysis, and lint
+- [[two-stage-ingestion]] — structural analysis before file generation
+- [[multi-pass-distillation]] — progressive raw → canonicalized refinement
+- [[contradictions-tracking]] — explicit UNRESOLVED flags for multi-LLM disagreements
+- [[decision-records]] — decisions with rationale, confidence, source, runner-up
+- [[context-packs]] — scoped dev-tool handoff bundles
+- [[context-compression]] — tiered compression as competitive moat
+- [[implementation-readiness]] — success criterion: can agentic tools implement correctly?
+- [[human-review-gate]] — mandatory review before dev context export
+- [[wiki-vs-context-engine]] — naming tension (resolved: adopt LLM-Wiki)
+- [[purpose-steering]] — purpose.md intent guidance alongside schema
+- [[closed-loop-harvesting]] — dev session logs back into raw/ for re-ingest
+- [[mvp-scope]] — start with markdown wiki submodule, automate incrementally
 
 ## Synthesis
 
 - [[evolving-thesis]] — running synthesis of all ingested research
-- [[project-brief]] — frozen handoff doc (generated at export)
+- [[project-brief]] — export cycle 1 draft (pending approval)
