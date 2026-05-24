@@ -11,7 +11,7 @@ sources_ingested: 0
 
 ## Current Understanding
 
-_No sources ingested yet. Add raw files to `raw/llm/` or `raw/web/` and run ingest._
+_No sources ingested yet. Add project-specific files to `raw/llm/` or `raw/web/` and run ingest. See `docs/examples/` for format reference._
 
 ## Open Questions
 

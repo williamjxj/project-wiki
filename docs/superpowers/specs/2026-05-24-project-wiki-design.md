@@ -1,8 +1,8 @@
 # Project Wiki Design Spec
 
 **Date:** 2026-05-24  
-**Status:** Approved  
-**Repo:** `init-wiki` → per-project wiki template
+**Status:** Approved (updated 2026-05-24 — iterative submodule workflow)  
+**Repo:** `project-wiki` — per-project wiki template (git submodule)
 
 ## Summary
 
@@ -31,11 +31,24 @@ A per-project implementation of [Karpathy's LLM Wiki pattern](https://gist.githu
 |----------|--------|-----------|
 | Scope | Per-project wiki | Fresh knowledge base per idea; archived when dev starts |
 | Agent | Agent-agnostic `AGENTS.md` | Works with Cursor, Claude Code, Codex, web chat |
-| Handoff | Git submodule + brief copy | Dev repo starts from brief; full wiki available on demand |
+| Handoff | Git submodule inside parent project + repeated synthesis sync | Wiki lives at `wiki/` from project start; export/sync cycles continue until project complete |
 | Source capture | Manual paste (LLM) + clipper (web) | No automation needed for v1 |
 | Approach | Template + agent skills (Approach B) | Reliability without building an app |
 
-## Architecture
+## Workflow Update (2026-05-24)
+
+The wiki is a **git submodule inside the parent project** from day one — not a separate repo handed off once at dev start.
+
+**Repeated cycle until project complete:**
+1. Collect raw sources in `wiki/raw/`
+2. Ingest → query → export brief
+3. Sync synthesis to parent `docs/PROJECT_BRIEF.md`
+4. Brainstorm/plan/implement in parent project
+5. Return to step 1 when new research is needed
+
+`raw/` starts empty. Format examples live in `docs/examples/`, not in `raw/`.
+
+---
 
 Three layers (Karpathy pattern, project-scoped):
 
@@ -307,7 +320,7 @@ Workflow-based checks — no automated test suite:
 
 | Check | How |
 |-------|-----|
-| Template bootstraps | Clone `init-wiki`; directory structure + AGENTS.md present |
+| Template bootstraps | Clone `project-wiki`; directory structure + AGENTS.md present |
 | Ingest works | Drop sample raw file → ingest → source page + index + log updated |
 | Multi-source synthesis | Ingest 2 LLM exports on same topic → concept page shows comparison |
 | Query compounds | Ask question → answer filed as new wiki page |

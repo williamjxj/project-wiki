@@ -1,11 +1,11 @@
 ---
 name: wiki-export-brief
-description: Generate a frozen project brief for dev repo handoff. Use when the user says "export brief" or "ready to build".
+description: Generate a synthesis snapshot from the wiki for parent project brainstorming. Use when the user says "export brief" — repeatable throughout the project lifecycle.
 ---
 
 # Wiki Export Brief
 
-Generate `wiki/synthesis/project-brief.md` from the evolving wiki. Requires lint first.
+Generate `wiki/synthesis/project-brief.md` from the evolving wiki. Requires lint first. **This is repeatable** — run after each research batch or when revisiting project direction.
 
 ## Prerequisites
 
@@ -16,29 +16,31 @@ Generate `wiki/synthesis/project-brief.md` from the evolving wiki. Requires lint
 
 1. **Lint** — run lint checks; report issues
 2. **Read** `wiki/synthesis/evolving-thesis.md` and all `wiki/concepts/` pages
-3. **Count** ingested sources: `grep -rl "status: ingested" raw/` or count source pages
-4. **Write** `wiki/synthesis/project-brief.md` with `status: draft`:
+3. **Count** ingested sources: count files in `wiki/sources/` or `grep -rl "status: ingested" raw/`
+4. **Supersede prior brief** — if `project-brief.md` exists with `status: current`, change to `superseded`
+5. **Write** `wiki/synthesis/project-brief.md` with `status: draft` and increment `export_cycle`:
 
    Sections (all required):
    - `# Project Brief: <Project Name>` — ask user if unknown
    - `## Problem`
-   - `## Chosen Approach` — from Emerging Decisions in evolving-thesis and concept Decision sections
+   - `## Current Understanding` — from evolving-thesis
+   - `## Chosen Approach` — from Emerging Decisions and concept Decision sections (note tentative vs firm)
    - `## Constraints`
    - `## Non-Goals`
-   - `## Rejected Alternatives` — from Divergence tables where options were rejected
-   - `## Open Questions` — unresolved items
+   - `## Rejected Alternatives` — from Divergence tables
+   - `## Open Questions` — unresolved items to widen exploration
 
-5. **Present** draft to user for review
-6. On approval → set frontmatter `status: frozen`, update date, set `sources_ingested` count
-7. **Append** to log: `## [YYYY-MM-DD] export | project-brief frozen`
-8. **Remind user** of handoff steps from AGENTS.md:
-   - Copy to dev repo `docs/PROJECT_BRIEF.md`
-   - Add wiki as git submodule
-   - Tag wiki repo `v1.0-research-complete`
+6. **Present** draft to user — aim to open views, not just summarize
+7. On approval → set `status: current`, update date and `sources_ingested` count
+8. **Append** to log: `## [YYYY-MM-DD] export | project-brief cycle N`
+9. **Offer to sync** to parent project:
+   - `cp wiki/synthesis/project-brief.md ../docs/PROJECT_BRIEF.md` (adjust path for submodule layout)
+   - Optionally sync `evolving-thesis.md` to `docs/RESEARCH_THESIS.md`
 
 ## Guardrails
 
-- Brief must be self-contained — readable without opening raw/ or other wiki pages
-- Do not freeze without user approval
-- Include rejected alternatives, not just the chosen approach
-- Do not silently drop open questions
+- Brief must be readable without opening raw/ — but link to wiki concept pages for depth
+- Do not set `current` without user approval
+- Include rejected alternatives and open questions — these widen views
+- This is not a one-time handoff; expect multiple export cycles per project
+- Do not tell user to archive or stop ingesting — research continues until project complete

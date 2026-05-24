@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Build a per-project LLM Wiki template (`init-wiki`) with directory scaffold, AGENTS.md schema, seed wiki files, example raw sources, four Cursor skills, and README quickstart.
+**Goal:** Build a per-project LLM Wiki template (`project-wiki`) with directory scaffold, AGENTS.md schema, seed wiki files, example raw sources, four Cursor skills, and README quickstart.
 
 **Architecture:** Karpathy's three-layer pattern (raw sources → wiki → schema) as a cloneable git template. Agent-agnostic `AGENTS.md` defines ingest/query/lint/export workflows; Cursor skills in `.cursor/skills/` enforce rigidity. No application code — markdown and skill files only.
 
@@ -43,7 +43,7 @@
 - [ ] **Step 1: Initialize git repo**
 
 ```bash
-cd /Users/william.jiang/my-wiki/init-wiki
+cd /Users/william.jiang/my-wiki/project-wiki
 git init
 ```
 
@@ -331,7 +331,7 @@ _(none yet)_
 
 ## [2026-05-24] init | project wiki created
 
-Initialized project wiki from init-wiki template.
+Initialized project wiki from project-wiki template.
 ```
 
 - [ ] **Step 3: Create wiki/synthesis/evolving-thesis.md**
@@ -484,7 +484,7 @@ EOF
 - [ ] **Step 1: Create README.md**
 
 ```markdown
-# Project Wiki Template
+# project-wiki
 
 A per-project research wiki based on [Karpathy's LLM Wiki pattern](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f). Capture multi-LLM research, distill into a compounding wiki, export a project brief for dev handoff.
 
@@ -880,7 +880,7 @@ EOF
 - [ ] **Step 1: Verify complete file tree**
 
 ```bash
-cd /Users/william.jiang/my-wiki/init-wiki
+cd /Users/william.jiang/my-wiki/project-wiki
 required_files=(
   AGENTS.md
   README.md
