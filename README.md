@@ -60,7 +60,7 @@ Each project should have **its own wiki repository** (fork or copy of **project-
 
 # 2. In your app repo
 cd my-project
-git submodule add git@github.com:you/my-saas-wiki.git wiki
+git submodule add git@github.com:williamjxj/project-wiki.git wiki
 git commit -m "add research wiki submodule"
 ```
 
