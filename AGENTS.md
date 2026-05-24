@@ -56,6 +56,43 @@ Stop ingesting only when the parent project is complete. Each export may superse
 - Wiki pages: kebab-case slugs with wikilinks (`[[auth-patterns]]`)
 - Log entries: `## [YYYY-MM-DD] <operation> | <subject>`
 
+## Raw Source Placement
+
+| Content | Directory | `type` | Required extra field |
+|---------|-----------|--------|----------------------|
+| LLM chat export (Claude, ChatGPT, Gemini) | `raw/llm/` | `llm-chat` | `question` |
+| Web article clip (Obsidian Web Clipper, manual save) | `raw/web/` | `web-article` | `url` |
+
+**Rules:**
+- LLM chats **never** belong in `raw/web/` — even if saved via Obsidian.
+- Web clips **never** belong in `raw/llm/`.
+- Filenames: kebab-case, **no spaces**. LLM files must match `YYYY-MM-DD-<provider>-<topic-slug>.md`.
+- If a file is misplaced or misnamed, **fix path/name/frontmatter before ingest** (see below). Do not ingest until placement and schema are correct.
+
+## Obsidian / clipper exports
+
+Obsidian and similar tools often write frontmatter like `title`, `created`, `tags`, `source` (URL). That is **not** the project-wiki schema.
+
+**Before ingest**, normalize every raw file to the required schema. Map clipper fields when possible:
+
+| Clipper field | Maps to |
+|---------------|---------|
+| `title` | `topic` (quoted string) |
+| `created` | `date` (YYYY-MM-DD) |
+| URL in body or `source` | `url` (web-article only) |
+| — | `type`, `source` (provider), `status: pending` — set explicitly |
+
+**Detect LLM chat vs web article:**
+- Chat export (User/Assistant turns, pasted Q&A, provider name in title) → `type: llm-chat`, move to `raw/llm/`, add `question`.
+- Article with canonical URL and no chat structure → `type: web-article`, keep in `raw/web/`, add `url`.
+
+**What may change in raw files:**
+- **Body:** never modify after ingest.
+- **Before first ingest:** path, filename, and frontmatter may be corrected to match this schema.
+- **After ingest:** only `status` may change (`pending` → `ingested`).
+
+If a file was ingested with wrong placement or schema, treat as **lint error**: move/rename, fix frontmatter, update the source page `raw:` path, then re-run lint (re-ingest only if wiki pages are out of sync).
+
 ## Raw Source Frontmatter (required)
 
 Every file in `raw/` must have YAML frontmatter:
@@ -67,12 +104,23 @@ source: claude | chatgpt | gemini | web
 topic: "short topic description"
 date: YYYY-MM-DD
 status: pending | ingested
-question: "original question asked"    # llm-chat only
-url: "https://..."                     # web-article only
+question: "original question asked"    # llm-chat only — required
+url: "https://..."                     # web-article only — required
 ---
 ```
 
-Only update `status` in raw files after ingest. Never modify raw body content.
+### Validation (lint + pre-ingest)
+
+| Check | Error if |
+|-------|----------|
+| Required keys | `type`, `source`, `topic`, `date`, `status` missing |
+| Type-specific | `llm-chat` without `question`; `web-article` without `url` |
+| Provider | `source` not in allowed set for `type` |
+| Clipper-only | Only `title`/`created`/`tags` present — schema mismatch |
+| Placement | `llm-chat` in `raw/web/` or `web-article` in `raw/llm/` |
+| Filename | spaces, or LLM file not matching `YYYY-MM-DD-<provider>-*.md` |
+
+Invalid raw files must **not** be marked `ingested` until corrected.
 
 ## Page Formats
 
@@ -123,7 +171,11 @@ Re-exporting creates a new cycle. Mark the previous brief `superseded` when prom
 
 Process **one raw file per invocation**:
 
-1. Read raw file; verify `status: pending` (abort if `ingested`)
+1. Read raw file; verify:
+   - `status: pending` (abort if `ingested`)
+   - Correct directory (`raw/llm/` vs `raw/web/`) and filename
+   - Full frontmatter schema (abort with fix instructions if Obsidian-only or missing fields)
+   - If misplaced or invalid: offer to normalize path/name/frontmatter **before** continuing
 2. Discuss key takeaways with the user before writing
 3. Create `wiki/sources/<slug>.md` from raw content
 4. Update or create relevant `wiki/concepts/` pages — merge duplicates, flag contradictions in comparison tables
@@ -133,7 +185,11 @@ Process **one raw file per invocation**:
 8. Set raw frontmatter `status: ingested`
 
 **Rules:**
-- Never modify raw body text
+- Never modify raw body text after ingest
+- Reject ingest when raw schema or placement is wrong — normalize first
+- On every ingest, update **all** affected concept pages (sources list, Divergence table, Decision if resolved) — never leave `_(single source)_` or `_(pending)_` after a second source on the same concept
+- Add `[[wikilinks]]` in `evolving-thesis.md` for every concept created or materially updated
+- When a concept **Decision** resolves a contradiction, update the source page `## Contradictions` section to note the resolution
 - One source at a time
 - Ask user to confirm before marking ingested
 
@@ -153,6 +209,21 @@ Use query to **open and widen views** before exporting a brief.
 **Trigger:** "lint the wiki" or after every 3–5 ingests
 
 Check and report:
+
+**Raw layer (errors)**
+- Frontmatter schema mismatch (Obsidian clipper fields, missing `type`/`topic`/`source`)
+- Misplaced files (`llm-chat` in `raw/web/`, etc.)
+- Invalid filenames (spaces, wrong LLM date pattern)
+- Ingested raw files that fail schema or placement checks
+
+**Wiki layer (warnings)**
+- Stale concept pages: `sources` frontmatter incomplete vs ingested source count; Divergence/Decision still `_(single source)_`, `_(pending)_`, or outdated after newer ingests
+- Synthesis gaps: concepts central to ingested sources but not linked from `evolving-thesis.md`
+- Weak cross-references: related concepts not linked both ways
+- Low inbound links: concept with ≤1 inbound wikilink from other wiki pages (excluding index)
+- Unresolved source contradictions: source `## Contradictions` open while a concept **Decision** already resolves it
+
+**Existing checks**
 - Contradictions between concept pages
 - Stale claims superseded by newer sources
 - Orphan pages (no inbound wikilinks from other wiki pages)
