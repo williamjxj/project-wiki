@@ -16,7 +16,7 @@ A shared **pipeline core** should own ingest/lint/export/sync; UIs and MCP are t
 |-------|---------------------------|--------------------------------|
 | Web UI | Open WebUI Pipelines plugin | Dedicated FastAPI + React operator at `pipeline/ui/` |
 | MCP | FastMCP with run_pipeline tools | Read-heavy MCP sidecar over `wiki_core` |
-| LLM runtime | anthropic SDK in core | Ollama default (`deepseek-v4-flash:cloud`) with approval gates |
+| LLM runtime | anthropic SDK in core | Ollama default (`qwen2.5:7b-instruct`) with approval gates |
 
 ## Decision
 

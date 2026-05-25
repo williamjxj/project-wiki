@@ -61,4 +61,4 @@ This project implements Karpathy's **LLM-Wiki pattern** ([[wiki-vs-context-engin
 
 ## Update (2026-05-25 ingest: claude pipeline plan)
 
-Claude's implementation plan converges on **shared pipeline core + three adapters** (UI, automation, MCP) — matching our v2 architecture. Key fork: Claude recommends Open WebUI Pipelines; we shipped a **purpose-built operator** with Ollama (`deepseek-v4-flash:cloud`) and human approval gates. MCP is read-heavy sidecar, not primary UI backend.
+Claude's implementation plan converges on **shared pipeline core + three adapters** (UI, automation, MCP) — matching our v2 architecture. Key fork: Claude recommends Open WebUI Pipelines; we shipped a **purpose-built operator** with Ollama (`qwen2.5:7b-instruct`) and human approval gates. MCP is read-heavy sidecar, not primary UI backend.
