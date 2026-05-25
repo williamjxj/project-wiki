@@ -1,8 +1,8 @@
 ---
 type: synthesis
 status: evolving
-last_updated: 2026-05-24
-sources_ingested: 22
+last_updated: 2026-05-25
+sources_ingested: 23
 ---
 
 # Evolving Thesis
@@ -30,6 +30,15 @@ This follows [[memory-synthesis-vs-rag]]: synthesis-first compilation plus hybri
 
 Milestones A/B, Phase 4 hardening, hybrid search, `/chat`, and MCP are **done** per [[mem-weaver-as-built-status]] codebase audit (2026-05-24). [[claude-mem-weaver-competitive-analysis]] is stale on backend completeness.
 
+### LLM Wiki paradigm ([[llm-wiki-paradigm]], [[knowledge-governance]])
+
+The LLM Wiki paradigm (from [[rag-graphrag-to-llm-knowledge-runtime]]) reframes the project: what mem-weaver implements is a **knowledge runtime** — a persistent middleware layer between raw data and LLM reasoning. Key insights:
+
+- **Synthesis shifts to ingestion phase:** Each ingest permanently improves the knowledge asset, rather than starting from scratch per query (RAG pattern). This aligns with mem-weaver's Phase B (async) compilation.
+- **Three-layer architecture** mirrors this very wiki: Raw Sources → Wiki (source + concept pages) → Schema (frontmatter, governance metadata).
+- **Knowledge governance gaps:** The video identifies confidence markers, supersession, and review queues as essential for long-term health. mem-weaver lacks all three — a critical gap as the wiki accumulates auto-synthesized claims.
+- **Hallucination write-back** is the critical risk: LLM-written wiki content that later gets retrieved as context creates a self-reinforcing error loop. This compounds over multiple ingest cycles.
+
 ### Known gaps ([[mem-weaver-known-gaps]])
 
 - No value gate (`SKIP`/`PROCESS`) in ingest pipeline
@@ -45,6 +54,7 @@ Milestones A/B, Phase 4 hardening, hybrid search, `/chat`, and MCP are **done** 
 3. **Cloud LLM:** Add Anthropic/OpenAI client to `public_llm.py` or keep Ollama-only for local-first?
 4. **Vector store at scale:** sqlite-vec sufficient or migrate to external store (ChromaDB per [[gemini-second-brain-design]])?
 5. **Product scope:** Solo dev / Obsidian tool vs broader SaaS — affects auth and scoping.
+6. **Hallucination write-back:** How to detect/prevent LLM-written wiki content that self-reinforces errors over multiple ingest cycles? ([[knowledge-governance]])
 
 ## Emerging Decisions
 
@@ -58,3 +68,5 @@ Milestones A/B, Phase 4 hardening, hybrid search, `/chat`, and MCP are **done** 
 | OSS/local-first; skip VC memory startup | **Leaning yes** | [[claude-mem-weaver-competitive-analysis]] |
 | Value gate before summarize | **Next build** | [[mem-weaver-known-gaps]], [[dual-llm-memory-pipeline]] |
 | As-built feature snapshot | **Resolved** | [[mem-weaver-as-built-status]] audit 2026-05-24 |
+| Knowledge governance (confidence, supersession, review queue) | **Open challenge** | [[knowledge-governance]] — LLM Wiki paradigm identifies these as essential for auto-synthesized wikis; not yet designed |
+| Hallucination write-back detection | **Needs research** | [[knowledge-governance]] — critical risk for LLM-compiled wikis; no prevention mechanism exists |

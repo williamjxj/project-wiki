@@ -34,6 +34,9 @@
 - [[claude-capability-checklist]] — Target memory capabilities (semantic/episodic/procedural, MCP, SSE)
 - [[claude-mem-weaver-gaps]] — Known gaps: taxonomy, graph, temporal, MCP
 
+### External perspectives
+- [[rag-graphrag-to-llm-knowledge-runtime]] — LLM Wiki paradigm: synthesis-at-ingest, three-layer architecture, knowledge governance
+
 ## Concepts
 
 - [[dual-llm-memory-pipeline]] — Ollama compiler + public LLM reasoner with Phase A/B loop
@@ -43,6 +46,8 @@
 - [[mem-weaver-known-gaps]] — Taxonomy, graph, temporal, scoping gaps
 - [[mem-weaver-as-built-status]] — Contradictions across sources on what's actually built
 - [[implementation-milestones]] — Milestones A/B, Phase 4, chat frontend, MCP server
+- [[llm-wiki-paradigm]] — Synthesis-at-ingest, knowledge runtime, three-layer architecture
+- [[knowledge-governance]] — Confidence, supersession, review queue, hallucination write-back risk
 
 ## Synthesis
 

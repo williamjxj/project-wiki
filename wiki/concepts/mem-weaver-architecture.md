@@ -5,7 +5,7 @@ sources:
   - claude-second-brain-implementation
   - claude-architecture-inspiration
   - chatgpt-mem-weaver-v2-roadmap
-last_updated: 2026-05-24
+last_updated: 2026-05-25
 ---
 
 # mem-weaver Architecture
@@ -30,4 +30,4 @@ last_updated: 2026-05-24
 
 **Target architecture:** Karpathy compilation + SQLite indexing + hybrid search + `POST /chat` feedback loop — **largely implemented** per [[mem-weaver-as-built-status]]. Remaining wiring: value gate, `_index.md` format alignment.
 
-Related: [[implementation-milestones]], [[mem-weaver-as-built-status]], [[dual-llm-memory-pipeline]], [[agent-skills-taxonomy]]
+Related: [[implementation-milestones]], [[mem-weaver-as-built-status]], [[dual-llm-memory-pipeline]], [[agent-skills-taxonomy]], [[llm-wiki-paradigm]]

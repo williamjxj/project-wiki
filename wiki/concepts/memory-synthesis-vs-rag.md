@@ -4,7 +4,8 @@ sources:
   - chatgpt-retrieval-vs-synthesis
   - claude-architecture-inspiration
   - chatgpt-api-token-context-management
-last_updated: 2026-05-24
+  - rag-graphrag-to-llm-knowledge-runtime
+last_updated: 2026-05-25
 ---
 
 # Memory Synthesis vs RAG Retrieval
@@ -23,9 +24,10 @@ last_updated: 2026-05-24
 | Vector/RAG | Good for large document corpora | Raw retrieval can miss synthesis; context bloat if chunks are verbose |
 | LLM Wiki synthesis | Compact, human-readable, compounding knowledge | Summary quality depends on local model; risk of over-compression |
 | Graph memory (Hindsight, MemGPT) | Entity/relation reasoning | Higher complexity; mem-weaver wikilinks are flat today |
+| **LLM Wiki paradigm** ([[rag-graphrag-to-llm-knowledge-runtime]]) | Synthesis-at-ingest — persistent compiled knowledge; each ingest improves the permanent asset | Risk of hallucination write-back (LLM writes errors → retrieves them later → self-reinforces) |
 
 ## Decision
 
 Adopt **synthesis-first wiki compilation** with **hybrid retrieval** (FTS5 + sqlite-vec + RRF) for query — aligned across [[claude-architecture-inspiration]] and [[chatgpt-mem-weaver-v2-roadmap]]. Confirmed implemented in mem-weaver codebase per [[mem-weaver-as-built-status]].
 
-Related: [[dual-llm-memory-pipeline]], [[mem-weaver-architecture]]
+Related: [[dual-llm-memory-pipeline]], [[mem-weaver-architecture]], [[llm-wiki-paradigm]], [[knowledge-governance]]

@@ -4,7 +4,7 @@ sources:
   - claude-mem-weaver-gaps
   - claude-capability-checklist
   - claude-mem-weaver-competitive-analysis
-last_updated: 2026-05-24
+last_updated: 2026-05-25
 ---
 
 # mem-weaver Known Gaps
@@ -30,4 +30,4 @@ last_updated: 2026-05-24
 
 Treat [[claude-mem-weaver-gaps]] as **honest as-is** inventory. Hybrid search and MCP are **no longer gaps** (built per [[mem-weaver-as-built-status]]). Priority improvements: value gate, 3-tier memory taxonomy, temporal validity, typed knowledge graph, multi-tenant scoping.
 
-Related: [[mem-weaver-as-built-status]], [[implementation-milestones]], [[agent-skills-taxonomy]]
+Related: [[mem-weaver-as-built-status]], [[implementation-milestones]], [[agent-skills-taxonomy]], [[knowledge-governance]]

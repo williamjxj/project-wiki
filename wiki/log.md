@@ -37,6 +37,14 @@ Sources ingested (in research order):
 
 Concept pages created/updated: [[dual-llm-memory-pipeline]], [[memory-synthesis-vs-rag]], [[mem-weaver-architecture]], [[agent-skills-taxonomy]], [[mem-weaver-known-gaps]], [[mem-weaver-as-built-status]], [[implementation-milestones]].
 
+## [2026-05-25] lint | weak cross-references, orphan wikilink fixed
+
+Fixed 3 warnings: added `[[llm-wiki-paradigm]]` to mem-weaver-architecture Related, added `[[knowledge-governance]]` to mem-weaver-known-gaps Related, replaced orphan `[[TGLTommy]]` wikilink with plain text.
+
+## [2026-05-25] ingest | rag-graphrag-to-llm-knowledge-runtime
+
+Processed raw/web/rag-graphrag-to-llm-knowledge-runtime.md. First web source ingested. Created source page, created [[llm-wiki-paradigm]] and [[knowledge-governance]] concept pages, updated [[memory-synthesis-vs-rag]] with LLM Wiki paradigm comparison, updated [[evolving-thesis]] with knowledge governance gaps and hallucination write-back risk.
+
 ## [2026-05-24] lint | 28 warnings found, 28 fixed
 
 Applied all approved lint fixes:
