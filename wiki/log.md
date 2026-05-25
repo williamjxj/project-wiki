@@ -25,3 +25,7 @@ Fixed: moved 3 raw files to `raw/llm/` with kebab-case names and AGENTS.md front
 ## [2026-05-24] export | project-brief cycle 1 (draft)
 
 Generated `wiki/synthesis/project-brief.md` from 3 ingested sources. Status: draft — pending user approval.
+
+## [2026-05-25] ingest | 2026-05-25-cluade-pipeline-plan
+
+Processed raw/llm/2026-05-25-cluade-pipeline-plan.md via pipeline operator live test. Created source page; updated pipeline-operator and mvp-scope concepts; appended thesis delta.

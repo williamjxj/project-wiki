@@ -32,3 +32,5 @@
 
 - [[evolving-thesis]] — running synthesis of all ingested research
 - [[project-brief]] — export cycle 1 draft (pending approval)
+- [[2026-05-25-cluade-pipeline-plan]] — Claude plan for Web UI, autonomous scripts, MCP over pipeline core
+- [[pipeline-operator]] — implemented FastAPI + React operator vs Open WebUI alternative

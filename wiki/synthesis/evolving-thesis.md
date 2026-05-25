@@ -58,3 +58,7 @@ This project implements Karpathy's **LLM-Wiki pattern** ([[wiki-vs-context-engin
 | MVP scope | Markdown wiki submodule, Obsidian viewer, manual skills | medium | all 3 |
 | Closed loop | Post-MVP session harvesting | medium | Gemini |
 | Embedding dedup | Post-MVP at scale | low | ChatGPT |
+
+## Update (2026-05-25 ingest: claude pipeline plan)
+
+Claude's implementation plan converges on **shared pipeline core + three adapters** (UI, automation, MCP) — matching our v2 architecture. Key fork: Claude recommends Open WebUI Pipelines; we shipped a **purpose-built operator** with Ollama (`deepseek-v4-flash:cloud`) and human approval gates. MCP is read-heavy sidecar, not primary UI backend.

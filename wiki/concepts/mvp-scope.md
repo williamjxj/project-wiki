@@ -1,7 +1,9 @@
 ---
 type: concept
-sources: [chatgpt-llm-based-project-workflow, gemini-llm-wiki-multi-agent, claude-multi-llm-research-synthesis-workflow]
-last_updated: 2026-05-24
+sources:
+- 2026-05-25-cluade-pipeline-plan
+- chatgpt-llm-based-project-workflow
+last_updated: 2026-05-25
 ---
 
 # MVP Scope
@@ -21,3 +23,17 @@ Start minimal; don't overbuild. Pipeline quality and distillation quality matter
 ## Decision
 
 **Lean: match current project-wiki submodule pattern** — markdown wiki in git, Obsidian as optional viewer, manual ingest/lint/export skills. Add automation (OpenKB, embedding dedup, session harvesters) incrementally. ChatGPT's "no UI" means no custom app UI — Obsidian as viewer is fine.
+
+# MVP Scope
+
+## Consensus
+
+Automate incrementally from manual Cursor skills — do not jump to full FastAPI/LangChain stack on day one.
+
+## Divergence
+
+Claude's follow-on plan proposes Open WebUI + scheduler daemon early; experimental-app v2 added a **local operator app** after manual workflow was proven.
+
+## Decision
+
+MVP remains markdown + git; v2 operator is an optional acceleration layer, not a replacement for `AGENTS.md` schema authority.
