@@ -24,4 +24,4 @@ date: 2026-05-25
 ## Contradictions
 
 - Proposes Open WebUI / FastAPI stack; **this repo implemented a dedicated FastAPI + React operator** instead ([[mvp-scope]] divergence — see [[pipeline-operator]]).
-- Raw plan places MCP before UI; experimental-app shipped **wiki_core → CLI/API → UI → MCP sidecar** ([[research-to-implementation-pipeline]]).
+- Raw plan places MCP before UI; Distill-Wiki-Pipeline shipped **wiki_core → CLI/API → UI → MCP sidecar** ([[research-to-implementation-pipeline]]).

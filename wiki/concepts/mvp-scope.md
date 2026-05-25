@@ -32,7 +32,7 @@ Automate incrementally from manual Cursor skills — do not jump to full FastAPI
 
 ## Divergence
 
-Claude's follow-on plan proposes Open WebUI + scheduler daemon early; experimental-app v2 added a **local operator app** after manual workflow was proven.
+Claude's follow-on plan proposes Open WebUI + scheduler daemon early; Distill-Wiki-Pipeline v2 added a **local operator app** after manual workflow was proven.
 
 ## Decision
 
