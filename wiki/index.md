@@ -8,6 +8,7 @@
 - [[gemini-llm-wiki-multi-agent]] — Gemini comprehensive evaluation of LLM-Wiki in multi-agent dev
 - [[claude-multi-llm-research-synthesis-workflow]] — Claude assessment mapping workflow to Karpathy's pattern
 - [[2026-05-25-cluade-pipeline-plan]] — Claude plan for Web UI, autonomous scripts, MCP over pipeline core
+- [[distill-ingest]] — Claude methodology guide: Collect → Filter → Distill → Canonical File → Ingest pipeline
 
 ## Concepts
 
@@ -34,3 +35,6 @@
 
 - [[evolving-thesis]] — running synthesis of all ingested research
 - [[project-brief]] — export cycle 1 draft (pending approval)
+- [[2026-05-26-claude-distill-canonical]] — Integrating MCP tools to make MemWeaver a live memory layer for IDEs, focusing on the distillation process from multiple LLMs.
+- [[mcp-server]] — Documentation on integrating `mcp-server` tools for MemWeaver.
+- [[distill-canonical]] — Guidelines for creating canonical files from multi-LLM outputs.

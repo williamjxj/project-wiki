@@ -35,3 +35,12 @@ Processed raw/llm/2026-05-25-cluade-pipeline-plan.md via pipeline operator live 
 Fixed `_INDEX_ENTRY_RE` regex in `pipeline/wiki_core/lint.py` — was missing `re.MULTILINE` flag, causing `^` to only match string start. Lint falsely reported every page as `index_out_of_sync`. After fix: zero false positives.
 
 Also reorganized `index.md`: moved `2026-05-25-cluade-pipeline-plan` to Sources and `pipeline-operator` to Concepts (both were only in Synthesis). Added wikilink from evolving-thesis to resolve orphan page. Bumped `sources_ingested` counters to 4 across brief and thesis.
+
+## [2026-05-26] ingest | distill-ingest
+
+Processed `raw/llm/2026-05-26-claude-distill-ingest.md`. Created source page. Updated evolving-thesis with thesis delta section. No new concept pages (user opted for source-only ingest).
+
+## 2023-10-04 ingest | distill-canonical
+
+## [2026-05-26] export | project-brief cycle 2
+Approved project brief export.
