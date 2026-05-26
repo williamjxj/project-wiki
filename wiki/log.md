@@ -44,3 +44,28 @@ Processed `raw/llm/2026-05-26-claude-distill-ingest.md`. Created source page. Up
 
 ## [2026-05-26] export | project-brief cycle 2
 Approved project brief export.
+
+## [2023-10-14] ingest | llm-web-api-context-token-management
+- Ingested and summarized the document "LLM网页对话框与API调用：上下文及Token内存管理详解" comparing context handling between web interfaces and API calls.
+
+## [2026-05-26] ingest | test-no-fm
+
+- Status: pending
+- Type: web-clip
+- Source: web
+- Date: 2026-05-26
+
+## [2023-10-04] ingest | test-no-fm
+- Frontmatter was detected as missing and auto-injected.
+- The content appears straightforward, containing only a simple heading and some text.
+- No specific concepts or insights were noted; however, the absence of frontmatter is notable.
+
+## [2023-10-26] ingest | context-management-web-api
+- Analysis created for `context-management-web-api` concept.
+
+## [2023-10-16] ingest | distill-canon
+
+Summary of the document outlining key claims, unique insights, and recommended updates to existing concepts such as `mcp-server`, `prompt-harness`, and `memweaver-integration`. This ensures MemWeaver's functionality is enhanced through MCP server integration and robust multi-source collection.
+
+## [2026-05-26] export | project-brief cycle 3
+Approved project brief export (auto-pipeline).

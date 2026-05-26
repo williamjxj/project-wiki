@@ -3,7 +3,7 @@ type: llm-chat
 source: claude
 topic: distill nanonical
 date: '2026-05-26'
-status: pending
+status: ingested
 question: what is distll canonical
 ---
 

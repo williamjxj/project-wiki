@@ -1,0 +1,3 @@
+- ## Web Dialogue vs. API: Context Management
+- **Web End:** Infinite, auto-accumulated chat history with uncontrollable resource consumption.
+- **API End:** Flexible context management by developers with precise token control and advanced memory management techniques.

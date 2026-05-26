@@ -1,0 +1,4 @@
+- ## Context Management in Web Dialogues vs. API Calls
+- ### Core Differences:
+  - **Web End:** All chat history is automatically accumulated, making context indefinite and resource-intensive.
+  - **API End:** Context management is fully controlled by developers, allowing for selective history inclusion and fine-grained token control.
