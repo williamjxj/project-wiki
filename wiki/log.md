@@ -29,3 +29,9 @@ Generated `wiki/synthesis/project-brief.md` from 3 ingested sources. Status: dra
 ## [2026-05-25] ingest | 2026-05-25-cluade-pipeline-plan
 
 Processed raw/llm/2026-05-25-cluade-pipeline-plan.md via pipeline operator live test. Created source page; updated pipeline-operator and mvp-scope concepts; appended thesis delta.
+
+## [2026-05-26] lint | index validation fixed, 23 warnings cleared
+
+Fixed `_INDEX_ENTRY_RE` regex in `pipeline/wiki_core/lint.py` — was missing `re.MULTILINE` flag, causing `^` to only match string start. Lint falsely reported every page as `index_out_of_sync`. After fix: zero false positives.
+
+Also reorganized `index.md`: moved `2026-05-25-cluade-pipeline-plan` to Sources and `pipeline-operator` to Concepts (both were only in Synthesis). Added wikilink from evolving-thesis to resolve orphan page. Bumped `sources_ingested` counters to 4 across brief and thesis.

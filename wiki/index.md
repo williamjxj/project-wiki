@@ -7,6 +7,7 @@
 - [[chatgpt-llm-based-project-workflow]] — ChatGPT analysis of multi-LLM research → llm-wiki → agentic coding pipeline
 - [[gemini-llm-wiki-multi-agent]] — Gemini comprehensive evaluation of LLM-Wiki in multi-agent dev
 - [[claude-multi-llm-research-synthesis-workflow]] — Claude assessment mapping workflow to Karpathy's pattern
+- [[2026-05-25-cluade-pipeline-plan]] — Claude plan for Web UI, autonomous scripts, MCP over pipeline core
 
 ## Concepts
 
@@ -27,10 +28,9 @@
 - [[purpose-steering]] — purpose.md intent guidance alongside schema
 - [[closed-loop-harvesting]] — dev session logs back into raw/ for re-ingest
 - [[mvp-scope]] — start with markdown wiki submodule, automate incrementally
+- [[pipeline-operator]] — implemented FastAPI + React operator vs Open WebUI alternative
 
 ## Synthesis
 
 - [[evolving-thesis]] — running synthesis of all ingested research
 - [[project-brief]] — export cycle 1 draft (pending approval)
-- [[2026-05-25-cluade-pipeline-plan]] — Claude plan for Web UI, autonomous scripts, MCP over pipeline core
-- [[pipeline-operator]] — implemented FastAPI + React operator vs Open WebUI alternative
