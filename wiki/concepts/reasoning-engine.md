@@ -1,0 +1,1 @@
+- **Description**: Public LLM (e.g., Anthropic Claude 3.5 or OpenAI GPT-4o API) used for handling complex user queries.
