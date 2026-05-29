@@ -30,7 +30,7 @@
 | `.cursor/skills/wiki-ingest/SKILL.md` | Ingest one raw source workflow |
 | `.cursor/skills/wiki-query/SKILL.md` | Query wiki with citations workflow |
 | `.cursor/skills/wiki-lint/SKILL.md` | Health-check wiki workflow |
-| `.cursor/skills/wiki-export-brief/SKILL.md` | Generate frozen project brief workflow |
+| `.cursor/skills/wiki-export-synthesis/SKILL.md` | Generate paired synthesis export workflow |
 
 ---
 
@@ -571,7 +571,7 @@ AGENTS.md             Agent schema (portable)
 | `wiki-ingest` | Process one pending raw source |
 | `wiki-query` | Answer from wiki with citations |
 | `wiki-lint` | Health-check the wiki |
-| `wiki-export-brief` | Generate frozen project brief |
+| `wiki-export-synthesis` | Generate paired synthesis exports |
 
 ## References
 
@@ -795,24 +795,24 @@ EOF
 
 ---
 
-### Task 9: Create wiki-export-brief Skill
+### Task 9: Create wiki-export-synthesis Skill
 
 **Files:**
-- Create: `.cursor/skills/wiki-export-brief/SKILL.md`
+- Create: `.cursor/skills/wiki-export-synthesis/SKILL.md`
 
-- [ ] **Step 1: Write wiki-export-brief skill**
+- [ ] **Step 1: Write wiki-export-synthesis skill**
 
-Create `.cursor/skills/wiki-export-brief/SKILL.md`:
+Create `.cursor/skills/wiki-export-synthesis/SKILL.md`:
 
 ```markdown
 ---
-name: wiki-export-brief
-description: Generate a frozen project brief for dev repo handoff. Use when the user says "export brief" or "ready to build".
+name: wiki-export-synthesis
+description: Generate paired quick and deep synthesis exports for dev repo handoff. Use when the user says "export brief", "export details", "export synthesis", or "ready to build".
 ---
 
-# Wiki Export Brief
+# Wiki Export Synthesis
 
-Generate `wiki/synthesis/project-brief.md` from the evolving wiki. Requires lint first.
+Generate `wiki/synthesis/project-brief.md` and `wiki/synthesis/project-details.md` from the evolving wiki. Requires lint first.
 
 ## Prerequisites
 
@@ -854,7 +854,7 @@ Generate `wiki/synthesis/project-brief.md` from the evolving wiki. Requires lint
 - [ ] **Step 2: Verify skill file**
 
 ```bash
-test -f .cursor/skills/wiki-export-brief/SKILL.md && grep -q "name: wiki-export-brief" .cursor/skills/wiki-export-brief/SKILL.md && echo "OK"
+test -f .cursor/skills/wiki-export-synthesis/SKILL.md && grep -q "name: wiki-export-synthesis" .cursor/skills/wiki-export-synthesis/SKILL.md && echo "OK"
 ```
 
 Expected: `OK`
@@ -862,9 +862,9 @@ Expected: `OK`
 - [ ] **Step 3: Commit**
 
 ```bash
-git add .cursor/skills/wiki-export-brief/
+git add .cursor/skills/wiki-export-synthesis/
 git commit -m "$(cat <<'EOF'
-feat: add wiki-export-brief cursor skill
+feat: add wiki-export-synthesis cursor skill
 
 EOF
 )"
@@ -893,7 +893,7 @@ required_files=(
   .cursor/skills/wiki-ingest/SKILL.md
   .cursor/skills/wiki-query/SKILL.md
   .cursor/skills/wiki-lint/SKILL.md
-  .cursor/skills/wiki-export-brief/SKILL.md
+  .cursor/skills/wiki-export-synthesis/SKILL.md
 )
 missing=0
 for f in "${required_files[@]}"; do
@@ -964,7 +964,7 @@ Only commit if there are staged changes from smoke test or prior uncommitted wor
 | wiki-ingest skill | Task 6 |
 | wiki-query skill | Task 7 |
 | wiki-lint skill | Task 8 |
-| wiki-export-brief skill | Task 9 |
+| wiki-export-synthesis skill | Task 9 |
 | Verification | Task 10 |
 
 All v1 deliverables covered. Out-of-scope items (qmd, Obsidian, CLI, web UI) intentionally excluded.

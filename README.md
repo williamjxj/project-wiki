@@ -27,8 +27,9 @@ Add **project-wiki** as a submodule at `wiki/` inside your project:
 ```
 my-project/
 ├── docs/
-│   ├── PROJECT_BRIEF.md       ← synced from wiki synthesis (repeatable)
-│   └── RESEARCH_THESIS.md     ← optional; deeper running synthesis
+│   ├── PROJECT_BRIEF.md       ← quick synthesis view (repeatable)
+│   ├── PROJECT_DETAILS.md     ← deep compare/analyze/suggest view
+│   └── RESEARCH_THESIS.md     ← optional; live running synthesis
 ├── wiki/                      ← project-wiki submodule
 │   ├── raw/                   ← starts empty; your project-specific sources
 │   │   ├── llm/
@@ -94,7 +95,8 @@ git push
 # Step B — commit in the parent (submodule pointer + synced docs)
 cd ..
 cp wiki/wiki/synthesis/project-brief.md docs/PROJECT_BRIEF.md
-git add docs/PROJECT_BRIEF.md wiki
+cp wiki/wiki/synthesis/project-details.md docs/PROJECT_DETAILS.md
+git add docs/PROJECT_BRIEF.md docs/PROJECT_DETAILS.md wiki
 git commit -m "sync research synthesis"
 git push
 ```
@@ -138,7 +140,7 @@ Repeat until the project is complete:
 flowchart LR
     A[Collect raw sources] --> B[Ingest one at a time]
     B --> C[Query / explore]
-    C --> D[Export brief]
+    C --> D[Export synthesis]
     D --> E[Sync to docs/]
     E --> F[Build in parent project]
     F --> A
@@ -149,11 +151,11 @@ flowchart LR
 | **Collect** | Paste LLM chats into `raw/llm/`; clip articles into `raw/web/` | — |
 | **Ingest** | Review takeaways, confirm | Summarize source, update concepts, revise synthesis |
 | **Query** | Ask questions to widen views | Answer from wiki with citations |
-| **Export brief** | Review draft, approve | Generate `wiki/synthesis/project-brief.md` |
+| **Export synthesis** | Review drafts, approve | Generate `wiki/synthesis/project-brief.md` and `wiki/synthesis/project-details.md` |
 | **Apply** | Copy synthesis to `docs/`, run `/brainstorming` | — |
 | **Build** | Implement with Cursor skills, MCP, etc. | — |
 
-Each export **supersedes** the previous brief. `wiki/synthesis/evolving-thesis.md` stays live between exports.
+Each export **supersedes** the previous brief/details pair. `wiki/synthesis/evolving-thesis.md` stays live between exports.
 
 ---
 
@@ -225,15 +227,18 @@ lint the wiki
 
 Query widens your view before committing to decisions. Lint catches orphans, contradictions, and pending sources.
 
-### 5. Export brief (repeatable)
+### 5. Export synthesis (repeatable)
 
 ```
 export brief
 ```
 
-Produces `wiki/synthesis/project-brief.md` with problem, current understanding, chosen approach, rejected alternatives, and open questions.
+Produces two paired docs:
 
-Run again after more ingests, mid-implementation, or when revisiting architecture. Prior briefs are marked `superseded`.
+- `wiki/synthesis/project-brief.md` — quick view with problem, current understanding, chosen approach, rejected alternatives, and open questions
+- `wiki/synthesis/project-details.md` — deep view for combined understanding, comparisons, analysis, recommendations, implementation notes, risks, and further research questions
+
+Run again after more ingests, mid-implementation, or when revisiting architecture. Prior export docs are marked `superseded`.
 
 ### 6. Sync synthesis to your project
 
@@ -241,14 +246,15 @@ From the **parent project root** (submodule mounted at `wiki/`):
 
 ```bash
 cp wiki/wiki/synthesis/project-brief.md docs/PROJECT_BRIEF.md
-cp wiki/wiki/synthesis/evolving-thesis.md docs/RESEARCH_THESIS.md   # optional
+cp wiki/wiki/synthesis/project-details.md docs/PROJECT_DETAILS.md
+cp wiki/wiki/synthesis/evolving-thesis.md docs/RESEARCH_THESIS.md   # optional live context
 git add docs/ wiki
 git commit -m "sync research synthesis (cycle N)"
 ```
 
 > **Path note:** The submodule has an inner `wiki/` directory (Karpathy's knowledge layer). From the parent project that is `wiki/wiki/synthesis/`. If you prefer cleaner paths, mount the submodule as `research/` instead — then use `research/wiki/synthesis/`.
 
-Use `docs/PROJECT_BRIEF.md` in Cursor with `/brainstorming`, skills, and MCP. Drill into the `wiki/` submodule for source attribution and rejected alternatives.
+Use `docs/PROJECT_BRIEF.md` in Cursor with `/brainstorming`, skills, and MCP. Use `docs/PROJECT_DETAILS.md` when you want the agent to combine, compare, analyze, suggest, or preserve nuance. Drill into the `wiki/` submodule for source attribution and rejected alternatives.
 
 ### 7. Keep going
 
@@ -282,7 +288,8 @@ Return to step 2 whenever you have new LLM research, design questions, or course
 │   ├── concepts/             Cross-linked topics and decisions
 │   └── synthesis/
 │       ├── evolving-thesis.md    Running synthesis (always live)
-│       └── project-brief.md      Latest export snapshot
+│       ├── project-brief.md      Latest quick export snapshot
+│       └── project-details.md    Latest deep export snapshot
 ├── .cursor/skills/           Cursor workflow accelerators
 └── docs/
     ├── examples/             Raw source format examples
@@ -300,7 +307,7 @@ Optional skills enforce workflow rigidity. `AGENTS.md` remains the portable fall
 | `wiki-ingest` | Process one pending raw source |
 | `wiki-query` | Answer from wiki with `[[wikilink]]` citations |
 | `wiki-lint` | Health-check contradictions, orphans, index sync |
-| `wiki-export-brief` | Generate synthesis snapshot for parent `docs/` |
+| `wiki-export-synthesis` | Generate quick brief plus deep details snapshots for parent `docs/` |
 
 ---
 
@@ -309,7 +316,7 @@ Optional skills enforce workflow rigidity. `AGENTS.md` remains the portable fall
 - **Ingest one source at a time** — review wiki updates before confirming; batch ingests produce mushy synthesis
 - **Keep `raw/` clean** — examples live in `docs/examples/`; only project-specific research goes in `raw/`
 - **Use query before export** — export captures what the wiki knows; query helps you discover what you still need
-- **Don't freeze early** — `project-brief.md` cycles through `draft → current → superseded`; decisions can evolve
+- **Don't freeze early** — `project-brief.md` and `project-details.md` cycle through `draft → current → superseded`; decisions can evolve
 - **Commit submodule + parent together** — wiki changes need two commits: inside `wiki/` first, then update the pointer in the parent
 - **Never gitignore `wiki/` in the parent** — use a per-project wiki repo as the submodule remote instead
 
@@ -317,6 +324,8 @@ Optional skills enforce workflow rigidity. `AGENTS.md` remains the portable fall
 
 ## References
 
+- [Template checklist](docs/TEMPLATE_CHECKLIST.md)
+- [Export documents](docs/EXPORTS.md)
 - [Design spec](docs/superpowers/specs/2026-05-24-project-wiki-design.md)
 - [Karpathy LLM Wiki gist](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f)
 - [Raw source format examples](docs/examples/)
