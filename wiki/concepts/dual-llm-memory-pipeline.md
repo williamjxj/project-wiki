@@ -9,7 +9,8 @@ sources:
   - gemini-second-brain-design
   - claude-middleware-delegator-plan
   - chatgpt-mem-weaver-v2-roadmap
-last_updated: 2026-05-24
+  - notebooklm-dual-llm-architecture-design
+last_updated: 2026-05-29
 ---
 
 # Dual-LLM Memory Pipeline
@@ -21,6 +22,10 @@ last_updated: 2026-05-24
 - **Phase B (async):** after the user gets an answer, Ollama updates wiki pages in the background so turn latency equals public LLM only.
 - **Core insight:** raw Q+A history is noisy; compiled wiki summaries are denser, more useful context than linear message replay.
 - **Economic/privacy split:** Ollama is free/local and keeps raw conversations private; cloud LLM sees only distilled output.
+- **Synthetic source framing:** Raw Q+A from LLMs is [[llm-outputs-as-synthetic-sources]] — useful first-pass signal, not ground truth. The wiki compilation (Phase B) is where verified knowledge emerges via contradiction tracking and human review.
+
+- **Storage validated:** [[notebooklm-dual-llm-architecture-design]] independently recommends SQLite+FTS5 over ChromaDB for single-user setups — the same choice mem-weaver made — and provides cost quantification (80–90% token reduction via wiki context).
+- **"Lost in the Middle" mitigation:** NotebookLM suggests limiting retrieved context to 1–3 focused wiki summaries, directly addressing a risk not discussed in other sources.
 
 ## Divergence
 
