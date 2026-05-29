@@ -13,7 +13,8 @@ This is not a one-time handoff. It is a continuous **collect → ingest → synt
 ```
 my-project/
 ├── docs/
-│   └── PROJECT_BRIEF.md       # synced from wiki/synthesis/project-brief.md
+│   ├── PROJECT_BRIEF.md       # quick view synced from wiki/synthesis/project-brief.md
+│   └── PROJECT_DETAILS.md     # deep analysis synced from wiki/synthesis/project-details.md
 ├── wiki/                      # project-wiki submodule
 │   ├── raw/
 │   ├── wiki/
@@ -29,7 +30,7 @@ raw/llm/          # LLM chat exports (manual paste) — immutable after ingest
 raw/web/          # Web article clips — immutable after ingest
 wiki/sources/     # One summary page per ingested raw file
 wiki/concepts/    # Cross-linked topic, entity, and decision pages
-wiki/synthesis/   # evolving-thesis.md (always live) + project-brief.md (export cycles)
+wiki/synthesis/   # evolving-thesis.md (always live) + project-brief.md + project-details.md (export cycles)
 wiki/index.md     # Content catalog — update on every ingest
 wiki/log.md       # Append-only timeline
 ```
@@ -43,11 +44,11 @@ Repeat this cycle throughout the project:
 1. **Collect** — add LLM chat exports to `raw/llm/`, web clips to `raw/web/`
 2. **Ingest** — process sources one at a time into the wiki
 3. **Query** — explore ideas, compare views, widen understanding
-4. **Export brief** — generate `wiki/synthesis/project-brief.md` for review
-5. **Apply** — sync synthesis into parent project (`docs/PROJECT_BRIEF.md`, brainstorming, planning, implementation)
+4. **Export synthesis** — generate `wiki/synthesis/project-brief.md` and `wiki/synthesis/project-details.md` for review
+5. **Apply** — sync synthesis into parent project (`docs/PROJECT_BRIEF.md`, `docs/PROJECT_DETAILS.md`, brainstorming, planning, implementation)
 6. **Build** — work in parent project; return to step 1 when new research is needed
 
-Stop ingesting only when the parent project is complete. Each export may supersede the previous brief.
+Stop ingesting only when the parent project is complete. Each export may supersede the previous synthesis pair.
 
 ## Naming Conventions
 
@@ -163,7 +164,24 @@ sources_ingested: N
 
 Sections: `# Project Brief: <Name>`, `## Problem`, `## Current Understanding`, `## Chosen Approach`, `## Constraints`, `## Non-Goals`, `## Rejected Alternatives`, `## Open Questions`
 
-Re-exporting creates a new cycle. Mark the previous brief `superseded` when promoting a new one to `current`.
+### Project details (`wiki/synthesis/project-details.md`)
+
+```yaml
+---
+type: project-details
+status: draft | current | superseded
+date: YYYY-MM-DD
+export_cycle: N
+sources_ingested: N
+paired_brief: project-brief
+---
+```
+
+Sections: `# Project Details: <Name>`, `## Source Map`, `## Combined Understanding`, `## Comparison Matrix`, `## Deep Analysis`, `## Recommendations`, `## Implementation Notes`, `## Risks And Mitigations`, `## Open Questions For Further Research`
+
+The details document is the deep-think companion to the brief. Use it for compare/combine/analyze/suggest work that is too long for quick planning. It should preserve meaningful nuance, cite `[[concepts]]` and `[[sources]]`, and make tradeoffs explicit.
+
+Re-exporting creates a new cycle. Mark previous `project-brief.md` and `project-details.md` documents `superseded` when promoting a new pair to `current`.
 
 ## Workflow: Ingest
 
@@ -202,7 +220,7 @@ Process **one raw file per invocation**:
 3. Synthesize answer with `[[wikilink]]` citations
 4. If the answer is valuable and not already captured → offer to file as new `wiki/concepts/` page, update index and log
 
-Use query to **open and widen views** before exporting a brief.
+Use query to **open and widen views** before exporting synthesis.
 
 ## Workflow: Lint
 
@@ -234,28 +252,30 @@ Check and report:
 
 Fix only what the user approves. Append to log: `## [YYYY-MM-DD] lint | <summary>`
 
-## Workflow: Export Brief
+## Workflow: Export Synthesis
 
-**Trigger:** "export brief" — use whenever the user wants a synthesis snapshot for brainstorming or planning
+**Trigger:** "export brief", "export details", or "export synthesis" — use whenever the user wants synthesis snapshots for brainstorming or planning
 
 1. Run lint first; surface warnings; require user acknowledgment if issues remain
-2. Read `wiki/synthesis/evolving-thesis.md` and all `wiki/concepts/` pages
-3. If a prior brief exists with `status: current`, mark it `superseded`
+2. Read `wiki/synthesis/evolving-thesis.md`, all `wiki/concepts/` pages, and relevant `wiki/sources/` pages for detail-level citations
+3. If prior export docs exist with `status: current`, mark both `project-brief.md` and `project-details.md` `superseded`
 4. Write `wiki/synthesis/project-brief.md` with `status: draft` and increment `export_cycle`
-5. Present to user for review — aim to widen views, not just confirm existing decisions
-6. On approval → set `status: current` and append to log: `## [YYYY-MM-DD] export | project-brief cycle N`
-7. Offer to **sync to parent project** (see below)
+5. Write `wiki/synthesis/project-details.md` with `status: draft`, the same `export_cycle`, and deep compare/combine/analyze/suggestion sections
+6. Present both drafts to user for review — brief for quick direction, details for nuance and reasoning
+7. On approval → set both statuses to `current` and append to log: `## [YYYY-MM-DD] export | synthesis cycle N`
+8. Offer to **sync to parent project** (see below)
 
 This workflow is **repeatable**. Run it many times as the project evolves.
 
 ## Sync Synthesis to Parent Project
 
-After a brief is approved (`status: current`):
+After export docs are approved (`status: current`):
 
 1. Copy `wiki/synthesis/project-brief.md` → parent `docs/PROJECT_BRIEF.md`
-2. Optionally copy `wiki/synthesis/evolving-thesis.md` → parent `docs/RESEARCH_THESIS.md` for deeper context
-3. In parent project Cursor session, use `docs/PROJECT_BRIEF.md` for `/brainstorming`, planning, and implementation
-4. Parent agent can drill into `wiki/` submodule for source attribution and rejected alternatives
+2. Copy `wiki/synthesis/project-details.md` → parent `docs/PROJECT_DETAILS.md`
+3. Optionally copy `wiki/synthesis/evolving-thesis.md` → parent `docs/RESEARCH_THESIS.md` for live context
+4. In parent project Cursor session, use `docs/PROJECT_BRIEF.md` for quick `/brainstorming`, planning, and implementation; use `docs/PROJECT_DETAILS.md` for deeper compare/analyze/suggestion work
+5. Parent agent can drill into `wiki/` submodule for source attribution and rejected alternatives
 
 Commit both submodule changes and parent `docs/` updates when syncing.
 
@@ -274,7 +294,8 @@ Commit both submodule changes and parent `docs/` updates when syncing.
 
 ## Synthesis
 - [[evolving-thesis]] — running synthesis (always live)
-- [[project-brief]] — latest export snapshot (when exported)
+- [[project-brief]] — latest quick export snapshot (when exported)
+- [[project-details]] — latest deep export snapshot (when exported)
 ```
 
 ## Log Format

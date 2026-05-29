@@ -52,4 +52,5 @@
 ## Synthesis
 
 - [[evolving-thesis]] — running synthesis of all ingested research
-- [[project-brief]] — frozen handoff doc (generated at export)
+- [[project-brief]] — quick export snapshot (generated at export)
+- [[project-details]] — deep export snapshot for comparison, analysis, and recommendations (generated at export)
