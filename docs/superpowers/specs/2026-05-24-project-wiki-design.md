@@ -101,7 +101,7 @@ Phase 3: Dev (separate repo)
     ├── wiki-ingest/
     ├── wiki-query/
     ├── wiki-lint/
-    └── wiki-export-brief/
+    └── wiki-export-synthesis/
 ```
 
 ### Dev Repo Layout (after handoff)
@@ -279,7 +279,7 @@ Four Cursor skills mirror AGENTS.md workflows. Skills enforce rigidity; AGENTS.m
 | `wiki-ingest` | Process one raw source | One file per invocation; update index + log; never modify raw body |
 | `wiki-query` | Answer from wiki | Read index first; cite wikilinks; offer to file answer as new page |
 | `wiki-lint` | Health check | Report-only by default; fix only with user approval |
-| `wiki-export-brief` | Generate handoff doc | Lint first; present draft for approval before freezing |
+| `wiki-export-synthesis` | Generate paired handoff docs | Lint first; present drafts for approval before marking current |
 
 Each skill is a `SKILL.md` referencing AGENTS.md as source of truth — no duplicate logic.
 
@@ -334,7 +334,7 @@ Workflow-based checks — no automated test suite:
 - Complete directory template
 - `AGENTS.md` with all four workflows
 - Raw source frontmatter template + example files (one LLM, one web)
-- Four Cursor skills (`wiki-ingest`, `wiki-query`, `wiki-lint`, `wiki-export-brief`)
+- Four Cursor skills (`wiki-ingest`, `wiki-query`, `wiki-lint`, `wiki-export-synthesis`)
 - `README.md` quickstart
 - Seed `wiki/index.md`, `wiki/log.md`, `wiki/synthesis/evolving-thesis.md`
 
