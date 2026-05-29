@@ -1,0 +1,922 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "wikilink": {
+      "@type": "@id"
+    }
+  },
+  "@type": "DigitalDocument",
+  "name": "Distill-Wiki-Pipeline Knowledge Graph",
+  "description": "Wikilink graph of all wiki pages",
+  "nodes": [
+    {
+      "@id": "2026-05-25-cluade-pipeline-plan",
+      "@type": "page",
+      "name": "2026-05-25-cluade-pipeline-plan"
+    },
+    {
+      "@id": "2026-05-26-claude-distill-canonical",
+      "@type": "page",
+      "name": "2026-05-26-claude-distill-canonical"
+    },
+    {
+      "@id": "2026-05-27-claude-04-summary",
+      "@type": "page",
+      "name": "2026-05-27-claude-04-summary"
+    },
+    {
+      "@id": "chatgpt-llm-based-project-workflow",
+      "@type": "page",
+      "name": "chatgpt-llm-based-project-workflow"
+    },
+    {
+      "@id": "wiki-vs-context-engine",
+      "@type": "page",
+      "name": "wiki-vs-context-engine"
+    },
+    {
+      "@id": "claude-multi-llm-research-synthesis-workflow",
+      "@type": "page",
+      "name": "claude-multi-llm-research-synthesis-workflow"
+    },
+    {
+      "@id": "distill-ingest",
+      "@type": "page",
+      "name": "distill-ingest"
+    },
+    {
+      "@id": "doubao",
+      "@type": "page",
+      "name": "doubao"
+    },
+    {
+      "@id": "gemini-llm-wiki-multi-agent",
+      "@type": "page",
+      "name": "gemini-llm-wiki-multi-agent"
+    },
+    {
+      "@id": "s2-notebooklm",
+      "@type": "page",
+      "name": "s2-notebooklm"
+    },
+    {
+      "@id": "closed-loop-harvesting",
+      "@type": "page",
+      "name": "closed-loop-harvesting"
+    },
+    {
+      "@id": "compounding-knowledge-layer",
+      "@type": "page",
+      "name": "compounding-knowledge-layer"
+    },
+    {
+      "@id": "context-compression",
+      "@type": "page",
+      "name": "context-compression"
+    },
+    {
+      "@id": "context-fragmentation",
+      "@type": "page",
+      "name": "context-fragmentation"
+    },
+    {
+      "@id": "context-packs",
+      "@type": "page",
+      "name": "context-packs"
+    },
+    {
+      "@id": "contradictions-tracking",
+      "@type": "page",
+      "name": "contradictions-tracking"
+    },
+    {
+      "@id": "decision-records",
+      "@type": "page",
+      "name": "decision-records"
+    },
+    {
+      "@id": "human-review-gate",
+      "@type": "page",
+      "name": "human-review-gate"
+    },
+    {
+      "@id": "implementation-readiness",
+      "@type": "page",
+      "name": "implementation-readiness"
+    },
+    {
+      "@id": "llm-outputs-as-synthetic-sources",
+      "@type": "page",
+      "name": "llm-outputs-as-synthetic-sources"
+    },
+    {
+      "@id": "multi-pass-distillation",
+      "@type": "page",
+      "name": "multi-pass-distillation"
+    },
+    {
+      "@id": "mvp-scope",
+      "@type": "page",
+      "name": "mvp-scope"
+    },
+    {
+      "@id": "pipeline-operator",
+      "@type": "page",
+      "name": "pipeline-operator"
+    },
+    {
+      "@id": "purpose-steering",
+      "@type": "page",
+      "name": "purpose-steering"
+    },
+    {
+      "@id": "research-to-implementation-pipeline",
+      "@type": "page",
+      "name": "research-to-implementation-pipeline"
+    },
+    {
+      "@id": "semantic-deduplication",
+      "@type": "page",
+      "name": "semantic-deduplication"
+    },
+    {
+      "@id": "two-stage-ingestion",
+      "@type": "page",
+      "name": "two-stage-ingestion"
+    },
+    {
+      "@id": "evolving-thesis",
+      "@type": "page",
+      "name": "evolving-thesis"
+    },
+    {
+      "@id": "project-brief",
+      "@type": "page",
+      "name": "project-brief"
+    },
+    {
+      "@id": "project-details",
+      "@type": "page",
+      "name": "project-details"
+    },
+    {
+      "@id": "index",
+      "@type": "index",
+      "name": "index"
+    },
+    {
+      "@id": "log",
+      "@type": "log",
+      "name": "log"
+    }
+  ],
+  "edges": [
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "chatgpt-llm-based-project-workflow"
+      },
+      "target": {
+        "@id": "wiki-vs-context-engine"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "evolving-thesis"
+      },
+      "target": {
+        "@id": "2026-05-25-cluade-pipeline-plan"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "evolving-thesis"
+      },
+      "target": {
+        "@id": "2026-05-26-claude-distill-canonical"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "evolving-thesis"
+      },
+      "target": {
+        "@id": "2026-05-27-claude-04-summary"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "evolving-thesis"
+      },
+      "target": {
+        "@id": "chatgpt-llm-based-project-workflow"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "evolving-thesis"
+      },
+      "target": {
+        "@id": "claude-multi-llm-research-synthesis-workflow"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "evolving-thesis"
+      },
+      "target": {
+        "@id": "closed-loop-harvesting"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "evolving-thesis"
+      },
+      "target": {
+        "@id": "compounding-knowledge-layer"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "evolving-thesis"
+      },
+      "target": {
+        "@id": "context-compression"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "evolving-thesis"
+      },
+      "target": {
+        "@id": "context-fragmentation"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "evolving-thesis"
+      },
+      "target": {
+        "@id": "context-packs"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "evolving-thesis"
+      },
+      "target": {
+        "@id": "contradictions-tracking"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "evolving-thesis"
+      },
+      "target": {
+        "@id": "decision-records"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "evolving-thesis"
+      },
+      "target": {
+        "@id": "distill-ingest"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "evolving-thesis"
+      },
+      "target": {
+        "@id": "doubao"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "evolving-thesis"
+      },
+      "target": {
+        "@id": "gemini-llm-wiki-multi-agent"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "evolving-thesis"
+      },
+      "target": {
+        "@id": "human-review-gate"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "evolving-thesis"
+      },
+      "target": {
+        "@id": "implementation-readiness"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "evolving-thesis"
+      },
+      "target": {
+        "@id": "llm-outputs-as-synthetic-sources"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "evolving-thesis"
+      },
+      "target": {
+        "@id": "multi-pass-distillation"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "evolving-thesis"
+      },
+      "target": {
+        "@id": "mvp-scope"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "evolving-thesis"
+      },
+      "target": {
+        "@id": "pipeline-operator"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "evolving-thesis"
+      },
+      "target": {
+        "@id": "purpose-steering"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "evolving-thesis"
+      },
+      "target": {
+        "@id": "research-to-implementation-pipeline"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "evolving-thesis"
+      },
+      "target": {
+        "@id": "s2-notebooklm"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "evolving-thesis"
+      },
+      "target": {
+        "@id": "semantic-deduplication"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "evolving-thesis"
+      },
+      "target": {
+        "@id": "two-stage-ingestion"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "evolving-thesis"
+      },
+      "target": {
+        "@id": "wiki-vs-context-engine"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "project-brief"
+      },
+      "target": {
+        "@id": "closed-loop-harvesting"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "project-brief"
+      },
+      "target": {
+        "@id": "compounding-knowledge-layer"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "project-brief"
+      },
+      "target": {
+        "@id": "context-compression"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "project-brief"
+      },
+      "target": {
+        "@id": "context-packs"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "project-brief"
+      },
+      "target": {
+        "@id": "contradictions-tracking"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "project-brief"
+      },
+      "target": {
+        "@id": "decision-records"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "project-brief"
+      },
+      "target": {
+        "@id": "human-review-gate"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "project-brief"
+      },
+      "target": {
+        "@id": "implementation-readiness"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "project-brief"
+      },
+      "target": {
+        "@id": "llm-outputs-as-synthetic-sources"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "project-brief"
+      },
+      "target": {
+        "@id": "multi-pass-distillation"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "project-brief"
+      },
+      "target": {
+        "@id": "mvp-scope"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "project-brief"
+      },
+      "target": {
+        "@id": "pipeline-operator"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "project-brief"
+      },
+      "target": {
+        "@id": "purpose-steering"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "project-brief"
+      },
+      "target": {
+        "@id": "semantic-deduplication"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "project-brief"
+      },
+      "target": {
+        "@id": "two-stage-ingestion"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "project-details"
+      },
+      "target": {
+        "@id": "2026-05-25-cluade-pipeline-plan"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "project-details"
+      },
+      "target": {
+        "@id": "2026-05-26-claude-distill-canonical"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "project-details"
+      },
+      "target": {
+        "@id": "2026-05-27-claude-04-summary"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "project-details"
+      },
+      "target": {
+        "@id": "chatgpt-llm-based-project-workflow"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "project-details"
+      },
+      "target": {
+        "@id": "claude-multi-llm-research-synthesis-workflow"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "project-details"
+      },
+      "target": {
+        "@id": "context-packs"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "project-details"
+      },
+      "target": {
+        "@id": "distill-ingest"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "project-details"
+      },
+      "target": {
+        "@id": "doubao"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "project-details"
+      },
+      "target": {
+        "@id": "gemini-llm-wiki-multi-agent"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "project-details"
+      },
+      "target": {
+        "@id": "multi-pass-distillation"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "project-details"
+      },
+      "target": {
+        "@id": "s2-notebooklm"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "index"
+      },
+      "target": {
+        "@id": "2026-05-25-cluade-pipeline-plan"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "index"
+      },
+      "target": {
+        "@id": "2026-05-26-claude-distill-canonical"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "index"
+      },
+      "target": {
+        "@id": "2026-05-27-claude-04-summary"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "index"
+      },
+      "target": {
+        "@id": "chatgpt-llm-based-project-workflow"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "index"
+      },
+      "target": {
+        "@id": "claude-multi-llm-research-synthesis-workflow"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "index"
+      },
+      "target": {
+        "@id": "closed-loop-harvesting"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "index"
+      },
+      "target": {
+        "@id": "compounding-knowledge-layer"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "index"
+      },
+      "target": {
+        "@id": "context-compression"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "index"
+      },
+      "target": {
+        "@id": "context-fragmentation"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "index"
+      },
+      "target": {
+        "@id": "context-packs"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "index"
+      },
+      "target": {
+        "@id": "contradictions-tracking"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "index"
+      },
+      "target": {
+        "@id": "decision-records"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "index"
+      },
+      "target": {
+        "@id": "distill-ingest"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "index"
+      },
+      "target": {
+        "@id": "doubao"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "index"
+      },
+      "target": {
+        "@id": "evolving-thesis"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "index"
+      },
+      "target": {
+        "@id": "gemini-llm-wiki-multi-agent"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "index"
+      },
+      "target": {
+        "@id": "human-review-gate"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "index"
+      },
+      "target": {
+        "@id": "implementation-readiness"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "index"
+      },
+      "target": {
+        "@id": "llm-outputs-as-synthetic-sources"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "index"
+      },
+      "target": {
+        "@id": "multi-pass-distillation"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "index"
+      },
+      "target": {
+        "@id": "mvp-scope"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "index"
+      },
+      "target": {
+        "@id": "pipeline-operator"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "index"
+      },
+      "target": {
+        "@id": "project-brief"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "index"
+      },
+      "target": {
+        "@id": "purpose-steering"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "index"
+      },
+      "target": {
+        "@id": "research-to-implementation-pipeline"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "index"
+      },
+      "target": {
+        "@id": "s2-notebooklm"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "index"
+      },
+      "target": {
+        "@id": "semantic-deduplication"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "index"
+      },
+      "target": {
+        "@id": "two-stage-ingestion"
+      }
+    },
+    {
+      "@type": "wikilink",
+      "source": {
+        "@id": "index"
+      },
+      "target": {
+        "@id": "wiki-vs-context-engine"
+      }
+    }
+  ]
+}

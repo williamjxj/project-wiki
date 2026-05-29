@@ -1,32 +1,28 @@
 ---
 type: concept
-sources: [chatgpt-llm-based-project-workflow, gemini-llm-wiki-multi-agent, claude-multi-llm-research-synthesis-workflow]
-last_updated: 2026-05-24
+sources: [claude-multi-llm-research-synthesis-workflow, gemini-llm-wiki-multi-agent]
+last_updated: 2026-05-29
 ---
 
 # Purpose Steering
 
 ## Consensus
 
-Every ingestion cycle must read intent guidance alongside structural schema ([[gemini-llm-wiki-multi-agent]]):
+Both sources converge on the need for intent guidance beyond structural schema. Claude implies it through "CLAUDE.md as schema." Gemini formalizes it as a dedicated `purpose.md` file.
 
-| File | Answers | Contains |
-|------|---------|----------|
-| `schema.md` / `AGENTS.md` | *How* to build the wiki | File formats, folder conventions, naming rules |
-| `purpose.md` | *Why* the wiki exists | Project thesis, engineering goals, constraints, research boundaries |
-
-Without [[purpose-steering]], the [[compounding-knowledge-layer]] drifts into irrelevant topics. Claude's Phase 3 `spec.md` serves similar steering at export time. ChatGPT's [[decision-records]] and constraints docs partially cover intent.
-
-Related: [[mvp-scope]] defines what to build first; [[implementation-readiness]] defines success.
+**Gemini's framework:**
+- `CLAUDE.md` / `schema.md` defines *how* to build the wiki (file formats, folder conventions, structural rules)
+- `purpose.md` defines *why* the wiki exists (project thesis, engineering goals, core constraints, research boundary)
+- The compiling model reads `purpose.md` at the start of every ingestion cycle to prevent knowledge graph drift into irrelevant topics
 
 ## Divergence
 
-| Source | View |
-|--------|------|
-| Gemini | Explicit root `purpose.md` read at every ingest cycle |
-| Claude | `spec.md` at export time; `AGENTS.md` for schema |
-| ChatGPT | Constraints and decision records; no `purpose.md` |
+| Aspect | Claude | Gemini |
+|--------|-------|--------|
+| Mechanism | Schema file (CLAUDE.md/AGENTS.md) | Dual file: schema.md + purpose.md |
+| Intent layer | Implicit in dev context package | Explicit purpose.md read at every ingest |
+| Drift prevention | Not addressed | Primary purpose of purpose.md |
 
 ## Decision
 
-**Lean: add `purpose.md` to parent project root.** Wiki `AGENTS.md` handles schema; parent `docs/PROJECT_BRIEF.md` evolves from export-brief into purpose steering.
+Purpose steering is confirmed as a design principle. Implement with a dedicated `purpose.md` file that the LLM reads before every ingest cycle to maintain focus and prevent scope drift.

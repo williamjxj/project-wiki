@@ -1,0 +1,1081 @@
+# Distill-Wiki-Pipeline — Full Context
+
+All wiki pages concatenated for LLM ingestion.
+
+## 2026-05-25-cluade-pipeline-plan
+
+# Claude: Project-Wiki Pipeline Implementation Plan
+
+## Key Claims
+
+1. **Build pipeline core first** — a shared Python module that all interfaces (CLI, Web UI, MCP) call into, avoiding duplication.
+2. **Open WebUI over AnythingLLM** — AnythingLLM is for RAG/Q&A. Open WebUI's Pipelines plugin system maps cleanly to ETL stages and requires zero new infrastructure.
+3. **Dirty-only reprocessing** — SQLite tracks what's changed since last run; only reprocess dirty files to avoid burning LLM tokens on unchanged content.
+4. **MCP server provides genuine value** — closes the loop: Claude generates wiki → MCP exposes it back → Claude can reference live wiki state without manual copy-paste.
+5. **Build order matters**: core → CLI scripts → MCP server → Open WebUI plugin.
+
+## Unique Insights
+
+- **Pipeline stages as a Python module**: `config.yaml` (paths, model, schedule), `ingest.py`, `refine.py`, `synthesize.py`, `export.py`, `runner.py` (orchestrator).
+- **CLI interface** with argparse/typer: full run, step-specific, file-watch mode, dry-run.
+- **Scheduler** using APScheduler (cross-platform) + watchdog (filesystem trigger), run as systemd/launchd.
+- **MCP server** with fastmcp: tools for `run_pipeline`, `get_article`, `list_articles`, `get_run_status`, `search_wiki`.
+- **Recommended tech stack**: Python 3.12, anthropic SDK, pydantic, rich, pathlib, sqlite3.
+- **Open WebUI Pipelines plugin** exposes pipeline controls as chat commands: `/run`, `/status`, `/run step=refine`, `/preview slug=<article>`.
+
+## Contradictions
+
+- None with first three sources. This is an implementation plan, not a research analysis. It assumes the wiki pattern established by sources 1–3.
+- Recommends FastMCP for MCP server — consistent with Gemini's Obsidian MCP recommendation but simpler to implement.
+
+## 2026-05-26-claude-distill-canonical
+
+# Claude: Distill Canonical
+
+## Key Claims
+
+1. **Add MCP server to MemWeaver** — existing `/query`, `/ingest`, `/chat` FastAPI endpoints map directly to MCP tools, making the wiki a live IDE memory layer.
+2. **Multi-LLM workflow discipline**: ask same question across LLMs → cherry-pick best answers → distill into single `.md` → drop in project root → ingest into MemWeaver. Never paste raw chat logs.
+3. **Multi-source is worth it when**: topics are complex, architectural, or long-lived. Skip for simple one-off questions.
+4. **Golden rule**: Collect → Distill → One canonical file → Ingest.
+
+## Unique Insights
+
+- Decision heuristic for multi-source collection: complex/architectural/long-lived topics benefit from triangulation across LLMs (Claude reasons better, GPT-4 has broader coverage, Gemini stronger on code). Simple one-off questions don't.
+- MemWeaver-specific MCP integration path: existing endpoints are already MCP-compatible, just need a thin wrapper.
+- Triangulation observation: different LLMs have genuinely different knowledge distributions — not just different phrasing.
+
+## Contradictions
+
+- Consistent with all earlier sources. This is a practical summary targeting the MemWeaver implementation specifically.
+
+## 2026-05-27-claude-04-summary
+
+# Claude: Karpathy Autoresearch
+
+## Key Claims
+
+1. **Karpathy autoresearch pattern**: pick a painful niche → design tiny automated research loop → run experiments automatically → identify best setup → turn into simple agent product → monetize.
+2. **5 AI workflows**: PRD → System Architecture → Features with Details → UI/UX Webframes → Master of Prompts — a workflow pipeline for AI-assisted development.
+3. **Tool landscape**: Open-WebUI (Docker + DeepSeek/MiniMax/Kimi + RAG), AnythingLLM (Docker + OpenRouter + RAG), RAGFlow (cloud), custom Site-RAG-chatbot (FastAPI + Next.js).
+4. **Chinese LLM API providers**: DeepSeek, Kimi (Moonshot), MiniMax, GLM (Zhipu) — with domestic vs international base URLs and model IDs.
+
+## Unique Insights
+
+- Notes that Ollama is "too slow" for practical use — prefers cloud-based Chinese LLM providers for local tooling.
+- Provides specific Chinese LLM API configuration reference (base URLs, model names) — useful for developers working with Chinese AI infrastructure.
+- The "5 AI workflows" template (PRD → System Arch → Features → UI/UX → Prompts) is a practical task decomposition for agentic coding.
+
+## Contradictions
+
+- This is a personal notes document, not a structured LLM analysis. Content is consistent with earlier sources — no contradictions with established concepts.
+- The autoresearch pattern is complementary to the llm-wiki pattern: autoresearch automates the research loop, llm-wiki structures the output.
+
+## chatgpt-llm-based-project-workflow
+
+# ChatGPT: LLM-Based Project Workflow
+
+## Key Claims
+
+1. **Context fragmentation is the real problem** — not coding ability. Engineers have scattered, duplicated, contradictory outputs from ChatGPT, Claude, Gemini, Reddit, docs, PDFs, and notes, with no canonical source of truth.
+2. **Semantic deduplication is the most critical pipeline stage** — ~80% of LLM output is repetitive but phrased differently. Without dedup, context windows are polluted, agents confused, implementation quality degraded.
+3. **Store decisions, not notes** — the system should persist decision + rationale + confidence + tradeoffs. This is far more valuable for agentic coding than traditional note-taking.
+4. **Context compression is the real competitive moat** — future winners are not better models but better context engineering: 10,000 pages → 20 pages → 2 pages → implementation prompts.
+5. **Multi-pass distillation is essential** — raw → clustered → summarized → canonicalized → implementation-oriented, not raw → final in one step.
+6. **Implementation readiness is the north star** — every output should answer "Can Cursor implement this correctly?"
+
+## Unique Insights
+
+- The system should be called a "Canonical Context Engine" or "Project Intelligence Layer" rather than a "wiki", which implies static human-edited content.
+- A "Context Packs" feature could be the killer app: per-module optimized bundles (arch + APIs + DB schema + constraints + coding conventions + implementation order) generated on demand for coding agents.
+- The long-term vision is an "AI-native software engineering memory system" where every discussion, decision, implementation, bug, and PR continuously improves project intelligence.
+- Suggests avoiding UI-first development — start with pipeline quality and CLI; UI is post-MVP.
+- Identifies the product gap: AI coding tools lack durable memory and canonical project understanding. The proposed system = Perplexity + Notion + Cursor Memory + Deep Research + ADR system for engineering.
+
+## Contradictions
+
+- ChatGPT argues the system should NOT be called a "wiki" (too static/manual), preferring "Context Engine" — this is a naming tension resolved in [[wiki-vs-context-engine]] by keeping "LLM-Wiki" as the architectural pattern name while acknowledging the product distinction.
+
+## claude-multi-llm-research-synthesis-workflow
+
+# Claude: Multi-LLM Research Synthesis Workflow
+
+## Key Claims
+
+1. **LLM outputs ≠ raw sources** — they are synthetic knowledge, first-pass synthesis with inherent drift, hallucinated edges, and model bias. This makes the wiki distillation layer more important, not less.
+2. **Same prompt across models** — control the variable. Force diverse angles by asking each model: "What are the main approaches?", "What are the trade-offs?", "What would you warn against?"
+3. **Wiki as persistent compounding artifact** — contradictions already flagged, cross-references built, synthesis already reflecting everything ingested. Contrast with RAG which re-discovers on every query.
+4. **Decision records need source attribution and confidence** — for engineering decisions, you need to know *why* a choice was made, which LLM suggested it, what the runner-up was, and confidence level.
+5. **Human review gate is non-negotiable** — never feed unreviewed wiki synthesis to a code agent.
+6. **Lint every 3–5 ingests** — find contradictions, orphan concepts, stale claims.
+
+## Unique Insights
+
+- Explicit **contradictions tracking** dedicated page with UNRESOLVED flags is Claude's key addition — "this is where multi-LLM input earns its keep"
+- Recommends specific tools: Obsidian (wiki IDE), [qmd](https://github.com/tobi/qmd) (BM25+vector search), obsidian-llm-wiki plugin, multi-agent variant (WayneChou-bot/LLM-Wiki-Agent-Workflow-Demo)
+- Identifies risks: multi-LLM outputs can amplify hallucinations if contradictions aren't caught; wiki maintenance grows and requires weekly commitment; the Phase 3 compile step is currently manual
+- Dev context package structure: constraints → architecture decisions → acceptance criteria → task list (note: dump the full wiki, compile targeted package per task)
+- **4-phase architecture**: (1) Multi-LLM Collection, (2) Wiki Distillation, (3) Dev Context Package, (4) Dev Tools
+
+## Contradictions
+
+- None with ChatGPT on core approach. Both validate the pipeline. Claude adds more operational structure (contradictions tracking, lint rhythm, human review gate) while ChatGPT focuses more on architectural vision (context compression as moat, context packs as killer feature).
+
+## distill-ingest
+
+# Claude: Distill-Ingest Methodology Guide
+
+## Key Claims
+
+1. **Pipeline must have 4 discrete stages**: Collect → Filter → Distill → Canonical File → Ingest. Skipping any one breaks the chain.
+2. **5-signal filter**: Score every paragraph on Specificity, Actionability, Non-obviousness, Consensus, Contradiction — keep only paragraphs scoring 3+.
+3. **Time budget per topic**: Collect 20 min · Filter 10 min · Distill 30 min · Canonical 15 min · Ingest 5 min = ~80 min for a durable artifact.
+4. **Distillation quality gate**: zero filler, every tool named with version, every tradeoff explicit, at least 3 gotchas per article.
+5. **Conflict → Decision Space framing**: LLM disagreements define the design space, not bugs to eliminate. State as tradeoffs with explicit choices.
+6. **Canonical file structure**: Frontmatter (title, slug, tags, sources, updated) + Facts (bullets) + Implementation (code) + Tradeoffs (table) + Gotchas (≥3).
+7. **Tiered automation ladder**: No-code (Obsidian) → Agent-assisted (Claude Projects) → MCP Servers → ETL Pipeline. Don't overbuild — use the simplest tier that fits scale.
+8. **Tool-specific ingest**: Each coding tool needs its own integration — CLAUDE.md for Claude Code, .cursorrules for Cursor, AGENTS.md for OpenCode, copilot-instructions.md for VS Code Copilot.
+
+## Unique Insights
+
+- Detailed **chunking strategy guide** (fixed-size vs semantic vs recursive vs small-to-big) with gotchas per approach
+- **Same seed questions across all LLMs** — specific template: "core concepts, failure modes, best tools, non-obvious tradeoffs, recommended approach"
+- **ETL pipeline prototype** — 80-line Python script using Claude API to distill raw → canonical
+- **Tool-specific MCP integration**: filesystem server, memory server, mcp-obsidian, mcp-sqlite, and MemWeaver-as-MCP
+- Recommends **NotebookLM** as a no-code alternative for quick synthesis
+- Most practical, step-by-step guide of all sources — directly actionable without further interpretation
+
+## Contradictions
+
+- None with earlier sources. This is a methodology companion that operationalizes concepts from sources 1–3 into concrete procedures.
+- The "Conflict → Decision Space" reframing extends Claude's original contradiction-tracking (source 2) beyond UNRESOLVED flags into design space exploration.
+
+## doubao
+
+# Doubao: LLM Web Dialogue vs API Context & Token Management
+
+## Key Claims
+
+1. **Web UI vs API core difference**: web UIs auto-accumulate full chat history in every turn (uncontrollable token consumption). API gives developers full control over context — what to include, what to trim.
+2. **API context management strategies**: single-turn isolation, fixed sliding window (keep N turns), token hard truncation (trim from head when threshold exceeded).
+3. **Advanced memory techniques**: dialogue summarization (compress old turns into one summary), key information extraction (retain core rules/persona, discard chit-chat), system prompt persistence (keep fixed system prompt, trim only dynamic history).
+4. **Memory architecture**: short-term (recent raw conversation) + long-term (DB/vector store) + RAG retrieval augmentation + consolidation/forgetting (archive old, prune low-frequency).
+
+## Unique Insights
+
+- Chinese-language deep dive into token management for API-based LLM applications — practical strategies rarely covered in English-language sources.
+- **Multi-session isolation architecture**: per-user/per-session independent context maintenance — important for production SaaS deployments.
+- **Memory consolidation/forgetting**: periodic compression of old conversations into summary form; automatic cleanup of unused/low-frequency history. This operationalizes knowledge decay (cf. Gemini's Ebbinghaus decay concept).
+- Standard API context processing flow: receive query → read history → trim/dedup/summarize/retrieve → assemble prompt → validate token count → call API → save response → async update long-term memory.
+
+## Contradictions
+
+- Compatible with earlier sources. Provides practical token/memory management details that complement Gemini's theoretical knowledge decay model.
+
+## gemini-llm-wiki-multi-agent
+
+# Gemini: LLM-Wiki Pattern in Multi-Agent Development
+
+## Key Claims
+
+1. **Two-stage ingestion is essential** — Stage 1 (Structural Analysis): read-only analysis of raw sources + wiki index, detect conflicts, map entities, output blueprint. Stage 2 (Generation & Linkage): execute blueprint, write pages, update links, log changes. Separation prevents corrupted formatting.
+2. **purpose.md for intent steering** — Beyond structural schema (`CLAUDE.md`/`schema.md`), a `purpose.md` file defines *why* the wiki exists: project thesis, engineering goals, core constraints, research boundary. Prevents knowledge graph drift.
+3. **Decay-weighted confidence scoring** — Every claim carries metadata: confirmation sources, creation date, and exponential decay confidence (Ebbinghaus curve). Claims reinforced across sessions gain strength; unreferenced assertions decay.
+4. **Systematic supersession** — When new info contradicts existing, mark old claim as stale, timestamped link to newer assertion, archive for auditability. Enables clean contradiction resolution.
+5. **Graph-layered entity extraction** — Typed entities (Project, Library, API_Contract, Developer_Decision) with typed semantic relationships (depends_on, supersedes). Enables graph-traversal queries by coding agents.
+6. **Hierarchical tree indexing** (PageIndex) — For documents >20 pages, build multi-level tree index rather than flat chunking. Keeps context windows clean, avoids vector DB overhead.
+7. **Machine-readable exports** — `llms.txt` (topic index), `llms-full.txt` (≤5MB flattened dump), `graph.jsonld` (JSON-LD knowledge graph for programmatic traversal).
+8. **Portable agent skills** — Thematic subdirectories compressed into Anthropic `SKILL.md` packages, loadable into `~/.claude/skills/`.
+9. **Obsidian MCP integration** — Mount wiki to IDE via Obsidian MCP server: `obsidian_get_note`, `obsidian_patch_note`, `obsidian_search_notes`.
+10. **Closed-loop dev-log harvesting** — Specific log paths for Claude Code, Cursor, Gemini CLI; harvester adapters convert logs to `raw/sessions/` for re-ingestion.
+
+## Unique Insights
+
+- **7-phase architecture** expands Claude's 4 phases: Exploratory Gathering → Immutable Logging → Automated Ingestion & Distillation → Synthesis & Verification → Context Export → IDE Execution → Closed-Loop Harvesting
+- **Tool comparison matrix**: OpenKB (best for CLI/infrastructure), Nashsu/llm_wiki (best for visual analysis with Sigma.js graphs), Pratiyush/llm-wiki (best for automated session sync)
+- Recommended implementation: OpenKB + Obsidian + MCP server as the practical stack
+- Emphasizes Ebbinghaus forgetting curve for knowledge decay — most detailed treatment of knowledge lifecycle management
+- Suggests JSON-LD schema graphs for agentic tool interoperability — a unique export format not mentioned by other sources
+
+## Contradictions
+
+- None with ChatGPT or Claude on core architecture. Gemini formalizes and extends concepts that Claude mentioned in passing (two-stage ingestion, purpose steering, closed-loop harvesting) into concrete implementation specifications.
+- Gemini's 7-phase architecture is compatible with Claude's 4-phase model — it simply subdivides phases 2 and 4 into finer granularity.
+
+## s2-notebooklm
+
+# S2 NotebookLM: Second Brain + Memory System
+
+## Key Claims
+
+1. **Three-layer architecture**: Public Reasoning Engine (Claude API/GPT-4o for complex Q&A) + Local Memory Manager (Ollama for background compilation) + Delegator/Middle Layer (FastAPI for routing and orchestration).
+2. **Storage as tiered markdown folder structure**: `/wiki/index.md`, `/wiki/concepts/`, `/wiki/skills/` — human-readable, version-controllable, editable.
+3. **Agent Skills Layer**: folders containing SKILL.md files package specialized knowledge into domains.
+4. **Vector/Graph Index for scaling**: ChromaDB or lightweight local graph (SQLite/Neo4j) for when the wiki scales past a few hundred pages.
+5. **IDE / Graph Viewer**: Obsidian for visualizing the knowledge graph in real-time.
+
+## Unique Insights
+
+- Proposes a **Local Memory Manager (Ollama)** running locally to handle background memory compilation asynchronously — so the user never waits for summarization.
+- Suggests ChromaDB or SQLite/Neo4j as scaling layer when wiki exceeds a few hundred pages — practical threshold for when vector/graph indexing becomes necessary.
+- The "Agent Skills Layer" (SKILL.md per domain) aligns with Gemini's portable agent skills concept — different framing, same mechanism.
+
+## Contradictions
+
+- Recommends Ollama for local LLM, while claude-04-summary notes Ollama is "too slow" — this is a practical performance tradeoff, not architectural disagreement.
+- Architecture is fully compatible with the llm-wiki pattern established by earlier sources.
+
+## closed-loop-harvesting
+
+# Closed Loop Harvesting
+
+## Consensus
+
+The concept is confirmed by both sources. Claude implies it (file query answers back into wiki). Gemini provides the most detailed implementation specification.
+
+**Gemini's implementation:**
+- Development tools write chronological conversation logs to local project directories
+- Harvester adapters scan specific paths per tool:
+  - Claude Code: `~/.claude/projects/*/*.jsonl`
+  - Cursor: `~/Library/.../Cursor/workspaceS...`
+  - Gemini CLI: `~/.gemini/`
+- Running `llmwiki sync` converts logs to markdown under `raw/sessions/`
+- These logs run through the ingestion pipeline, flagging discrepancies between generated code and planned architecture
+- Keeps the wiki evergreen and in sync with the actual codebase
+
+## Divergence
+
+| Aspect | Claude | Gemini |
+|--------|-------|--------|
+| Specificity | Conceptual — "don't let insights die" | Concrete — tool-specific paths, harvester adapters, sync command |
+| Implementation | Manual query-filing | Automated log scanning + re-ingestion pipeline |
+
+## Decision
+
+Closed-loop harvesting is confirmed as a core workflow component. Gemini's tool-specific harvester paths provide the implementation blueprint for automation post-MVP.
+
+## compounding-knowledge-layer
+
+# Compounding Knowledge Layer
+
+## Consensus
+
+The core architectural shift is from transient LLM chat sessions to a persistent, structured knowledge base that compounds over time. All three sources agree.
+
+Gemini adds the most detailed knowledge lifecycle management:
+- **Decay-weighted confidence scoring**: every claim carries confirmation sources, creation date, and exponential decay confidence (Ebbinghaus forgetting curve). Claims reinforced across sessions gain strength; unreferenced assertions decay.
+- **Systematic supersession**: contradictions don't just get flagged — old claims are marked stale with timestamped links to newer assertions, archived for auditability.
+- **Graph-layered entity extraction**: typed entities (Project, Library, API_Contract, Developer_Decision) with typed relationships (depends_on, supersedes) enable programmatic graph traversal by coding agents.
+
+## Divergence
+
+| Aspect | ChatGPT | Claude | Gemini |
+|--------|---------|--------|--------|
+| Emphasis | Context compression as moat | Persistent artifact | Knowledge lifecycle + graph typing |
+| Knowledge model | Tiered compression pipeline | Cross-ref + contradiction flags | Decay-weighted confidence + supersession |
+| Entity layer | Flat concepts | Wiki pages with wikilinks | Typed entities with semantic relationships |
+
+**Scaling threshold** (s2-notebooklm): vector/graph indexing (ChromaDB/SQLite/Neo4j) becomes necessary when the wiki exceeds a few hundred pages. Below that, markdown + git + Obsidian suffices. This provides a concrete scaling milestone for the MVP-to-production transition.
+
+**Local Memory Manager** (s2-notebooklm): a local Ollama instance can handle background memory compilation (summarization, dedup, linking) asynchronously — keeping cloud API costs low for routine processing while reserving cloud LLMs for complex reasoning.
+
+## Decision
+
+The compounding knowledge layer is the central architectural pattern — wiki persists and compounds. Gemini's knowledge lifecycle management (decay, supersession, typed entities) is the most complete model and should guide implementation.
+
+## context-compression
+
+# Context Compression
+
+## Consensus
+
+Context compression operates at two levels:
+
+**Research pipeline level** (ChatGPT): multi-tier compression from raw research to implementation prompts — 10,000 pages → 20 pages → 2 pages. This is the competitive moat for AI-assisted engineering.
+
+**API call level** (doubao): token/memory management strategies for LLM API calls:
+- **Sliding window**: keep only last N turns, discard oldest
+- **Token hard truncation**: trim from head when threshold exceeded
+- **Dialogue summarization**: compress old multi-turn conversations into summaries
+- **Key information extraction**: retain core rules/persona, discard chit-chat
+- **System prompt persistence**: keep fixed system, trim only dynamic history
+
+**Memory architecture**: short-term memory (recent raw conversation) + long-term memory (DB/vector store) + RAG retrieval + consolidation/forgetting (periodic archive of old, prune low-frequency).
+
+## Divergence
+
+| Aspect | ChatGPT | Doubao |
+|--------|---------|--------|
+| Level | Research pipeline (pages → prompts) | API call (token/memory management) |
+| Mechanism | Multi-tier distillation | Sliding window, summarization, truncation |
+| Goal | Implementation readiness for coding agents | Token cost control for API calls |
+
+## Decision
+
+Both levels are complementary. The research pipeline level compresses raw knowledge into implementation context. The API call level manages how that context is fed to the LLM at runtime. Both are needed for a complete system.
+
+## context-fragmentation
+
+# Context Fragmentation
+
+## Consensus
+
+Context fragmentation is identified as the core engineering problem this project solves — engineers collect scattered, duplicated, contradictory information from multiple LLMs (ChatGPT, Claude, Gemini), web articles, docs, PDFs, GitHub repos, screenshots, and notes, with no canonical source of truth. This leads to agent confusion, incomplete architecture, conflicting instructions, and degraded implementation quality. _(single source — ChatGPT)_
+
+## Divergence
+
+_(No cross-source comparison yet — only one source ingested.)_
+
+## Decision
+
+_(Pending cross-source consensus.)_
+
+## context-packs
+
+# Context Packs
+
+## Consensus
+
+ChatGPT identifies context packs as per-module bundles for coding agents. Gemini extends this with specific machine-readable export formats:
+
+- **`llms.txt`**: standard index of all available topics and pages (per llms.txt spec)
+- **`llms-full.txt`**: entire compiled database as single ≤5MB flat file for pasting into any model window
+- **`graph.jsonld`**: JSON-LD knowledge graph with typed entities and semantic relationships for programmatic graph-traversal
+
+**Portable agent skills**: thematic subdirectories of the wiki can be compressed into Anthropic `SKILL.md` packages, placed in `~/.claude/skills/`, making them immediately discoverable by Claude Code. This avoids consuming token budgets reading raw markdown files on every session.
+
+**Tool-specific ingest formats** (distill-ingest): each dev tool needs its own integration file:
+- **Claude Code**: `CLAUDE.md` at project root (auto-loaded every session)
+- **Cursor**: `.cursorrules` with instructions to check wiki before implementing
+- **OpenCode/Codex CLI**: `AGENTS.md` with wiki article Read-before-Write rules
+- **VSCode Copilot**: `.github/copilot-instructions.md` pointing to wiki/ for answers
+
+## Divergence
+
+| Aspect | ChatGPT | Gemini |
+|--------|---------|--------|
+| Format | Conceptual "bundle per feature" | Specific: llms.txt, llms-full.txt, JSON-LD, SKILL.md |
+| Audience | Coding agents (Cursor, OpenCode, etc.) | Coding agents + Claude Code skills system |
+| Packaging | Ad-hoc generation per module | Automated export + skill compilation |
+
+## Decision
+
+Context packs span both per-module bundles (ChatGPT's vision) and standardized exports (Gemini's specification). The `llms.txt`, `llms-full.txt`, and `graph.jsonld` formats provide the implementation spec for automated export.
+
+## contradictions-tracking
+
+# Contradictions Tracking
+
+## Consensus
+
+Both sources address contradictions. Claude flags them explicitly with UNRESOLVED status. Gemini goes further with **systematic supersession**: when new info contradicts existing, the compiling agent marks the old claim as stale, appends a timestamped link to the newer overriding assertion, and archives the older version for historical auditability.
+
+Claude's approach alerts the user to decide. Gemini's approach resolves automatically through supersession while preserving history.
+
+## Divergence
+
+| Aspect | Claude | Gemini |
+|--------|-------|--------|
+| Status | UNRESOLVED — requires human decision | SUPERSEDED — auto-resolved, archived |
+| Resolution | Human review gate decides | System marks old as stale, links to new |
+| History tracking | Contradictions page | Archived versions with timestamps |
+
+## Decision
+
+Use all three approaches. Contradictions that can be resolved through supersession (newer source overrides older) follow Gemini's pattern. Contradictions requiring judgment remain UNRESOLVED and go through Claude's human review gate. In all cases, frame contradictions as **design space exploration** (distill-ingest reframe) — disagreements define the solution landscape, not bugs to eliminate. Each contradiction becomes a tradeoff with explicit pro/con for each option.
+
+## decision-records
+
+# Decision Records
+
+## Consensus
+
+Both sources agree that persisting structured decisions is critical — not just notes. Decision records should capture: rationale, tradeoffs, and confidence.
+
+**ChatGPT** emphasizes the value for agentic coding: "decision + rationale + confidence + tradeoffs" creates gold for coding agents.
+
+**Claude** adds that source attribution is essential — you need to know which LLM suggested it, what the runner-up was, and why the choice was made. This helps track which model produced which recommendations and enables better contradiction resolution.
+
+## Divergence
+
+| Aspect | ChatGPT | Claude |
+|--------|---------|--------|
+| Structure | decision + rationale + confidence + tradeoffs | Adds source attribution and runner-up |
+| Purpose | Canonical context for coding agents | Track provenance for accountability |
+| Format | YAML block example | Implicit, mentions "confidence levels" |
+
+## Decision
+
+Decision records should include: decision, rationale, confidence, source attribution, runner-up (with rationale), and tradeoffs. Combine both perspectives.
+
+## human-review-gate
+
+# Human Review Gate
+
+## Consensus
+
+Both sources agree human review is non-negotiable. Claude establishes it as a gate between Phase 2 (distillation) and Phase 3 (dev context). The distill-ingest guide provides concrete quality criteria for what review should check:
+
+- **Zero filler** — every sentence states a specific fact (name, number, command, path)
+- **All tools versioned** — never say "use Redis", say "use Redis 7.4 with RediSearch 2.8"
+- **Tradeoffs explicit** — every decision choice has a tradeoffs table
+- **≥3 gotchas** — non-obvious issues per article
+- **Sources listed** — frontmatter includes all source LLMs
+
+## Divergence
+
+| Aspect | Claude | Distill-Ingest |
+|--------|-------|---------------|
+| Gate position | Between wiki and dev tools | At canonical file completion |
+| Criteria | General — "flag contradictions" | Specific — zero filler, versioned, gotchas |
+| Enforcement | Human judgment | Checklist with concrete tests |
+
+## Decision
+
+The human review gate checks against the distill-ingest quality criteria (zero filler, versioned, tradeoffs explicit, gotchas, sources). Review happens after canonical file is written but before it's exported to dev tools.
+
+## implementation-readiness
+
+# Implementation Readiness
+
+## Consensus
+
+ChatGPT defines the success criterion as "Can Cursor implement this correctly?" — shifting focus from knowledge browsing to implementation readiness. Every output should be optimized for agentic coding tools, not human reading. This criterion changes how distillation, dedup, and context packing are prioritized. _(single source — ChatGPT)_
+
+## Divergence
+
+_(No cross-source comparison yet.)_
+
+## Decision
+
+_(Pending cross-source consensus.)_
+
+## llm-outputs-as-synthetic-sources
+
+# LLM Outputs as Synthetic Sources
+
+## Consensus
+
+ChatGPT frames LLM chat exports as first-pass synthetic knowledge, not ground truth — 80% is repetitive and differently phrased. The wiki distillation layer is where signal emerges from noise. This epistemic reframe is foundational: LLMs produce opinions and suggestions that must be deduplicated, distilled, and reconciled before they become actionable engineering knowledge. _(single source — ChatGPT)_
+
+## Divergence
+
+_(No cross-source comparison yet.)_
+
+## Decision
+
+_(Pending cross-source consensus.)_
+
+## multi-pass-distillation
+
+# Multi-Pass Distillation
+
+## Consensus
+
+ChatGPT defines the general pipeline (raw → clustered → summarized → canonicalized → implementation-oriented). The distill-ingest guide operationalizes this into four discrete stages with concrete methodology:
+
+1. **Collect** (20 min): Ask same 3–5 seed questions across all LLMs. Save raw immediately — never paste from memory.
+2. **Filter** (10 min): Apply **5-signal test** — score each paragraph on Specificity, Actionability, Non-obviousness, Consensus, Contradiction. Keep only paragraphs scoring ≥3.
+3. **Distill** (30 min): Synthesize surviving content into structured form. LLM disagreements become explicit tradeoffs (Conflict → Decision Space).
+4. **Canonical** (15 min): Write dense markdown with frontmatter, Facts (bullets), Implementation (code), Tradeoffs (table), Gotchas (≥3).
+
+**Quality gate**: zero filler, every tool named with version, every tradeoff explicit.
+
+## Divergence
+
+| Aspect | ChatGPT | Distill-Ingest |
+|--------|---------|---------------|
+| Stages | raw → clustered → summarized → canonicalized | Collect → Filter → Distill → Canonical |
+| Filter method | Embedding-based dedup | 5-signal manual scoring |
+| Time budget | None specified | ~80 min per topic |
+| Quality criteria | Implementation readiness | Zero filler, versioned tools, explicit tradeoffs, gotchas |
+
+## Decision
+
+Combine both. ChatGPT's embedding dedup handles the automated dedup layer; distill-ingest's 5-signal test provides the manual review methodology for human-in-the-loop quality.
+
+## mvp-scope
+
+# MVP Scope
+
+## Consensus
+
+ChatGPT strongly advises against building a UI first — "huge mistake many engineers make." The recommended MVP: CLI-first pipeline with markdown + git, focused on pipeline quality and canonical distillation. Input: pasted chats + markdown + URLs. Processing: chunk → dedup → cluster → summarize. Output: canonical architecture.md, implementation-plan.md, cursor-context.md. _(single source — ChatGPT)_
+
+## Divergence
+
+_(No cross-source comparison yet.)_
+
+## Decision
+
+_(Pending cross-source consensus.)_
+
+## pipeline-operator
+
+# Pipeline Operator
+
+## Consensus
+
+The pipeline operator is a Python core module that orchestrates the wiki pipeline stages (ingest → refine → synthesize → export) with three interface frontends: CLI, Open WebUI Pipelines plugin, and MCP server. All three call into the same `pipeline/runner.py` orchestrator.
+
+**Architecture:**
+```
+pipeline/
+├── config.yaml          # paths, model, schedule, flags
+├── ingest.py            # collect & parse wiki sources
+├── refine.py            # distill/clean via LLM
+├── synthesize.py        # cross-article synthesis
+├── export.py            # emit final docs
+└── runner.py            # orchestrator, state tracking via SQLite
+```
+
+**MCP server** (fastmcp): exposes tools for `run_pipeline`, `get_article`, `list_articles`, `get_run_status`, `search_wiki` — enabling Claude Code to interact with the wiki pipeline directly during coding sessions.
+
+**Open WebUI Pipelines plugin**: `/run`, `/status`, `/run step=refine`, `/preview slug=<article>` as chat commands.
+
+**CLI** (argparse/typer): full run, step-specific, file-watch mode (`--watch`), dry-run (`--dry-run`).
+
+## Divergence
+
+_(Single source — this is an implementation plan, not a research comparison.)_
+
+## Decision
+
+Build order: core → CLI scripts → MCP server → Open WebUI plugin. The MCP server and Open WebUI plugin are thin wrappers over the same core, so doing them last minimizes rework.
+
+## purpose-steering
+
+# Purpose Steering
+
+## Consensus
+
+Both sources converge on the need for intent guidance beyond structural schema. Claude implies it through "CLAUDE.md as schema." Gemini formalizes it as a dedicated `purpose.md` file.
+
+**Gemini's framework:**
+- `CLAUDE.md` / `schema.md` defines *how* to build the wiki (file formats, folder conventions, structural rules)
+- `purpose.md` defines *why* the wiki exists (project thesis, engineering goals, core constraints, research boundary)
+- The compiling model reads `purpose.md` at the start of every ingestion cycle to prevent knowledge graph drift into irrelevant topics
+
+## Divergence
+
+| Aspect | Claude | Gemini |
+|--------|-------|--------|
+| Mechanism | Schema file (CLAUDE.md/AGENTS.md) | Dual file: schema.md + purpose.md |
+| Intent layer | Implicit in dev context package | Explicit purpose.md read at every ingest |
+| Drift prevention | Not addressed | Primary purpose of purpose.md |
+
+## Decision
+
+Purpose steering is confirmed as a design principle. Implement with a dedicated `purpose.md` file that the LLM reads before every ingest cycle to maintain focus and prevent scope drift.
+
+## research-to-implementation-pipeline
+
+# Research to Implementation Pipeline
+
+## Consensus
+
+The unified pipeline spans multi-LLM collection → wiki distillation → dev context packaging → coding tools. Key refinements:
+
+**When to multi-source**: only for complex, architectural, or long-lived topics. Simple one-off questions don't benefit from triangulation. Different LLMs have genuinely different knowledge distributions — Claude reasons better, GPT-4 has broader coverage, Gemini is stronger on code details.
+
+**Core discipline**: Never paste raw chat logs into coding tools. Always Collect → Distill → One canonical file → Ingest first.
+
+**Complementary pattern — Karpathy autoresearch**: a related loop that automates the research phase itself: pick niche → design tiny loop → run experiments → measure → productize. The autoresearch loop generates the research; the llm-wiki pattern structures and distills it.
+
+## Divergence
+
+_(Single comparison — both sources from Claude, consistent.)_
+
+## Decision
+
+The pipeline is confirmed. Add a decision gate: before multi-source collection, evaluate whether the topic warrants the investment (complex/architectural/long-lived = yes; simple one-off = no).
+
+## semantic-deduplication
+
+# Semantic Deduplication
+
+## Consensus
+
+ChatGPT identifies semantic deduplication as the most important pipeline stage — ~80% of LLM output is repetitive but phrased differently.
+
+Gemini approaches deduplication through the **two-stage compiler** pattern: Stage 1 analysis maps conceptual entities and identifies overlaps before any files are written. This structural analysis serves as the dedup gate — overlapping claims are detected and consolidated in the blueprint before generation occurs.
+
+Both sources agree deduplication must happen before content is written to the wiki.
+
+## Divergence
+
+| Aspect | ChatGPT | Gemini |
+|--------|---------|--------|
+| Mechanism | Embedding clustering (OpenAI/VoyageAI/BGE) | Structural analysis in Stage 1 of two-stage ingestion |
+| When | During pipeline processing | During Stage 1 (analysis) before Stage 2 (generation) |
+| Granularity | Semantic similarity scoring | Entity and claim overlap detection |
+
+## Decision
+
+Combine both approaches. Use Gemini's two-stage ingestion structure (analysis → generation) as the pipeline architecture, with ChatGPT's embedding-based semantic similarity scoring as the dedup mechanism within Stage 1 analysis.
+
+## two-stage-ingestion
+
+# Two-Stage Ingestion
+
+## Consensus
+
+Both Claude and Gemini define a two-stage ingestion process. Gemini formalizes it most explicitly:
+
+- **Stage 1 (Structural Analysis):** The model analyzes raw sources alongside the wiki index, maps entities, identifies overlaps, detects contradictions. No files are modified — the model outputs a structured blueprint of required changes.
+- **Stage 2 (Generation & Linkage):** The model executes the blueprint — updates existing pages, creates new concept pages, establishes bidirectional links, logs operations.
+
+This separation prevents formatting and structural organization competing for model attention, which can cause corrupted formatting and broken directories.
+
+## Divergence
+
+| Aspect | Claude | Gemini |
+|--------|-------|--------|
+| Formalization | Implicit in Phase 2 workflow | Explicit two-stage pipeline with blueprint |
+| Tools | Generic "LLM writes, you browse" | OpenKB or Nashsu desktop app, file watcher |
+| Input guidance | General schema | purpose.md for steering + CLAUDE.md for structure |
+
+## Decision
+
+The two-stage ingestion pipeline (analysis before generation) is confirmed — it is the canonical ingestion method. Stage 1 is read-only analysis outputting a blueprint; Stage 2 executes the blueprint.
+
+## wiki-vs-context-engine
+
+# Wiki vs Context Engine
+
+## Consensus
+
+Both ChatGPT and Claude validate the core Karpathy pattern but frame it differently. ChatGPT argues the system should NOT be called a "wiki" (too static/manual) and prefers "Canonical Context Engine" or "Project Intelligence Layer." Claude keeps the "wiki" framing and provides operational detail on how the LLM maintains it.
+
+## Divergence
+
+| Aspect | ChatGPT | Claude |
+|--------|---------|--------|
+| Naming | "Context Engine" — wiki implies static human-edited | "Wiki" — the LLM maintains it, you browse |
+| Tone | Product-oriented (commercially viable, Perplexity+Notion comparison) | Engineering-oriented (operational details, lint rhythm, tool recommendations) |
+| Focus | Vision — context compression as moat, context packs as killer feature | Operations — contradictions tracking, human review gate, decision records |
+
+## Decision
+
+Adopt "LLM-Wiki" as the architectural pattern name (Karpathy's original). The product distinction ("Context Engine") is acknowledged but kept as future product positioning — the current implementation is a markdown wiki maintained by an LLM.
+
+## evolving-thesis
+
+# Evolving Thesis
+
+> Running synthesis across all ingested sources. Updated after every ingest.
+
+## Current Understanding
+
+This project implements Karpathy's **LLM-Wiki pattern** as a multi-LLM research → distillation → dev-tool handoff pipeline. The first source (ChatGPT) validates the core direction and provides foundational concepts.
+
+**Problem:** [[context-fragmentation]] — scattered, duplicated, contradictory research across LLMs and sources. Coding agents fail from bad context, not bad models.
+
+**Epistemic reframe** ([[llm-outputs-as-synthetic-sources]]): LLM chat exports are first-pass synthetic knowledge, not ground truth. The wiki distillation layer is where signal emerges.
+
+**Pipeline** ([[multi-pass-distillation]]): raw → clustered → summarized → canonicalized → implementation-oriented, progressing through [[semantic-deduplication]] and [[decision-records]].
+
+**Knowledge layer** ([[compounding-knowledge-layer]]): persistent markdown graph with decisions, cross-refs, supersession — not ephemeral RAG.
+
+**North star:** [[implementation-readiness]] — "Can Cursor implement this correctly?" determines quality.
+
+**Outputs:** [[context-packs]] — per-module bundles for agentic tools.
+
+**Moat:** [[context-compression]] — multi-tier compression from raw research to implementation prompts.
+
+**Contradictions** ([[contradictions-tracking]]): explicit UNRESOLVED flags for multi-LLM disagreements — "where multi-LLM input earns its keep."
+
+**Human review** ([[human-review-gate]]): non-negotiable gate between wiki distillation and dev tool handoff.
+
+**Operational rhythm:** ingest one at a time; lint every 3–5 ingests; human review before export.
+
+**Pipeline phases** ([[research-to-implementation-pipeline]]): Multi-LLM Collection → Wiki Distillation → Dev Context Package → Dev Tools.
+
+**Cross-source synthesis** ([[wiki-vs-context-engine]]): the pattern is called "LLM-Wiki" (Karpathy's original) while acknowledging the product distinction.
+
+**Decision provenance** ([[decision-records]]): each decision captures source attribution and runner-up alongside rationale and confidence.
+
+**Closed feedback loop** ([[closed-loop-harvesting]]): insights discovered during dev get harvested back into raw/ for re-ingest.
+
+**Intent guidance** ([[purpose-steering]]): project-level schema/constraints steer wiki behavior.
+
+**Ingestion method** ([[two-stage-ingestion]]): structural analysis before page generation, one source at a time.
+
+**Pipeline operator** ([[pipeline-operator]]): Python core module with three interfaces — CLI, Open WebUI Pipelines plugin, MCP server.
+
+**Build order:** core → CLI scripts → MCP server → Open WebUI plugin.
+
+**MVP** ([[mvp-scope]]): CLI-first, markdown + git, no UI. Pipeline quality over features.
+
+### Thesis Delta: ChatGPT — Foundational Concepts
+
+Source 1 ([[chatgpt-llm-based-project-workflow]]) establishes the core problem framing and provides 10 foundational concepts:
+
+- **Context fragmentation** identified as the real engineering problem — not coding ability
+- **Semantic deduplication** called out as the most critical pipeline stage
+- **Decision-first storage** (decision + rationale + confidence + tradeoffs) preferred over unstructured notes
+- **Context compression** framed as the competitive moat vs better models
+- **Implementation readiness** as the north star success criterion
+
+### Thesis Delta: Claude — Operational Structure
+
+Source 2 ([[claude-multi-llm-research-synthesis-workflow]]) adds the operational layer that ChatGPT's vision lacked:
+
+- **4-phase pipeline** defined explicitly: Collection → Wiki Distillation → Dev Context Package → Dev Tools
+- **Contradictions tracking** as a dedicated wiki component with UNRESOLVED flags
+- **Human review gate** as non-negotiable between distillation and dev handoff
+- **Lint rhythm** of every 3–5 ingests to catch contradictions, orphans, stale claims
+- **Decision records** expanded with source attribution and confidence levels
+- **Closed-loop harvesting** — query answers and dev session insights feed back into the wiki
+
+### Thesis Delta: Gemini — Implementation Specification
+
+Source 3 ([[gemini-llm-wiki-multi-agent]]) provides the most detailed implementation specifications:
+
+- **Two-stage ingestion formalized**: Stage 1 (read-only structural analysis → blueprint) → Stage 2 (execute blueprint, write pages)
+- **purpose.md intent steering**: dual-file schema (schema.md + purpose.md) prevents knowledge drift
+- **Decay-weighted confidence scoring**: claims carry Ebbinghaus-style exponential decay
+- **Systematic supersession**: contradictions resolved through stale-archival with timestamped links
+- **Graph-layered entity extraction**: typed entities (Project, Library, API) with typed relations (depends_on, supersedes)
+- **Hierarchical tree indexing** (PageIndex): for documents >20 pages, skip flat chunking
+- **Machine-readable exports**: llms.txt, llms-full.txt (≤5MB), graph.jsonld
+- **Portable agent skills**: wiki subdirectories → SKILL.md packages → ~/.claude/skills/
+- **Obsidian MCP integration**: real-time IDE↔wiki connection via MCP tools
+
+### Thesis Delta: Claude — Pipeline Implementation Plan
+
+Source 4 ([[2026-05-25-cluade-pipeline-plan]]) transitions from research to operational implementation:
+
+- **Pipeline operator** ([[pipeline-operator]]): Python core with config.yaml, ingest/refine/synthesize/export stages, SQLite run-state tracking
+- **Build order established**: core → CLI scripts → MCP server → Open WebUI plugin
+- **MCP server with fastmcp**: 5 tools (run_pipeline, get_article, list_articles, get_run_status, search_wiki)
+- **Open WebUI Pipelines** as the Web UI layer — `/run`, `/status`, `/preview` as chat commands
+- **Dirty-only reprocessing**: SQLite tracks changes to avoid token waste on unchanged content
+
+### Thesis Delta: Distill-Ingest — Methodology Guide
+
+Source 5 ([[distill-ingest]]) provides the rigorous methodology that earlier sources advocated for in principle:
+
+- **5-signal filter** formalizes [[multi-pass-distillation]]: score on Specificity, Actionability, Non-obviousness, Consensus, Contradiction — keep only 3+
+- **Conflict → Decision Space** reframes [[contradictions-tracking]]: LLM disagreements define the design space, not bugs
+- **Distillation quality gate** adds concrete criteria to [[human-review-gate]]: zero filler, versioned tools, explicit tradeoffs, ≥3 gotchas
+- **Tool-specific ingest files** extends [[context-packs]]: CLAUDE.md, .cursorrules, AGENTS.md, copilot-instructions.md per tool
+- **Tiered automation**: no-code (Obsidian) → agent-assisted → MCP → ETL pipeline — don't overbuild
+
+### Thesis Delta: Distill-Canonical — Summary & Decision Heuristic
+
+Source 6 ([[2026-05-26-claude-distill-canonical]]) is a short summary — two key additions:
+
+- **When to multi-source heuristic**: only for complex/architectural/long-lived topics. Different LLMs have genuinely different knowledge distributions.
+- **MemWeaver MCP path**: existing `/query`/`/ingest`/`/chat` endpoints map directly to MCP tools
+
+### Thesis Delta: Claude-04-Summary — Autoresearch & Reference Material
+
+Source 7 ([[2026-05-27-claude-04-summary]]) is a personal notes document adding:
+
+- **Karpathy autoresearch pattern** as a complementary loop to llm-wiki: automate the research phase, then structure via wiki
+- **5 AI workflows** template for task decomposition in agentic coding
+- **Chinese LLM API reference** (DeepSeek, Kimi, MiniMax, GLM) for practical tool integration
+
+### Thesis Delta: Doubao — Token & Memory Management
+
+Source 8 ([[doubao]]) adds practical API-level context management:
+
+- **API token strategies**: sliding window, hard truncation, dialogue summarization, key info extraction — operationalizing [[context-compression]] at the API call level
+- **Memory architecture**: short-term + long-term + RAG + consolidation/forgetting — practical knowledge lifecycle management
+
+### Thesis Delta: S2-NotebookLM — Local Memory Manager & Scaling
+
+Source 9 ([[s2-notebooklm]]) adds:
+
+- **Local Memory Manager**: Ollama for background compilation, keeping cloud costs low
+- **Scaling threshold**: vector/graph indexing needed when wiki exceeds ~hundreds of pages
+- **Agent Skills Layer**: SKILL.md per domain — aligns with Gemini's portable agent skills ([[context-packs]])
+
+## Thesis Deltas
+
+## project-brief
+
+# Project Brief: LLM-Wiki Handoff Pipeline
+
+## Problem
+
+**Context fragmentation** — engineers collect scattered, duplicated, contradictory outputs from multiple LLMs (ChatGPT, Claude, Gemini), web articles, docs, PDFs, and notes with no canonical source of truth. Coding agents fail because they receive bad context: incomplete architecture, conflicting instructions, and noisy raw chat dumps. The core problem is not model capability — it's context engineering.
+
+## Current Understanding
+
+The project builds Karpathy's **LLM-Wiki pattern** as a multi-LLM research → distillation → dev-tool handoff pipeline. 9 sources across 3 LLMs and 2 web articles converge on a unified architecture:
+
+- **Epistemic foundation**: LLM outputs are first-pass synthetic knowledge, not ground truth ([[llm-outputs-as-synthetic-sources]]). Signal emerges only through distillation.
+- **Pipeline**: Multi-LLM Collection → [[two-stage-ingestion]] (analysis → generation) → [[multi-pass-distillation]] with [[semantic-deduplication]] → [[decision-records]] with source attribution → [[context-packs]] → dev tools.
+- **Knowledge layer**: A [[compounding-knowledge-layer]] (persistent markdown graph) replaces ephemeral RAG. [[contradictions-tracking]] with UNRESOLVED/SUPERSEDED flags, [[decision-records]] with provenance, and decay-weighted confidence scoring.
+- **Disciplines**: [[human-review-gate]] with concrete quality criteria (zero filler, versioned tools, explicit tradeoffs, ≥3 gotchas). Ingest one at a time. Lint every 3–5 ingests. Never feed unreviewed synthesis to code agents.
+- **North star**: [[implementation-readiness]] — "Can Cursor implement this correctly?"
+
+## Chosen Approach
+
+**Pipeline architecture** ([[pipeline-operator]]): Python core module with three interfaces — CLI (argparse/typer), Open WebUI Pipelines plugin, MCP server (fastmcp). All call into shared `pipeline/runner.py`. Build order: core → CLI → MCP → Web UI.
+
+**Ingestion** ([[two-stage-ingestion]]): Stage 1 (read-only structural analysis → blueprint), Stage 2 (execute blueprint, write pages, update links). [[purpose-steering]] via dedicated `purpose.md` file read before every ingest.
+
+**Distillation** ([[multi-pass-distillation]]): Collect (20 min, same 3–5 seed questions across LLMs) → Filter (10 min, 5-signal test: Specificity, Actionability, Non-obviousness, Consensus, Contradiction) → Distill (30 min, synthesize, frame conflicts as tradeoffs) → Canonical (15 min, dense markdown with frontmatter, facts, code, tradeoffs, gotchas). ~80 min per topic.
+
+**Compression** ([[context-compression]]): Two-level — research pipeline (10K pages → 20 pages → 2 pages) and API call level (sliding window, summarization, hard truncation).
+
+**Context delivery** ([[context-packs]]): Per-module bundles (architecture, APIs, schema, constraints, conventions, implementation order) + standardized exports (llms.txt, llms-full.txt, graph.jsonld) + portable SKILL.md packages + tool-specific integration files (CLAUDE.md, .cursorrules, AGENTS.md).
+
+**Closed loop** ([[closed-loop-harvesting]]): Dev session logs harvested back into `raw/sessions/` for re-ingestion, flagging discrepancies between generated code and planned architecture.
+
+## Constraints
+
+- All content is markdown + git (human-readable, version-controlled, no vendor lock-in)
+- CLI-first: UI comes post-MVP ([[mvp-scope]])
+- Local-first: MCP server runs locally, no external hosting needed
+- Tool-agnostic: works with Cursor, Claude Code, OpenCode, VS Code Copilot
+- Pipeline quality over features: dirty-only reprocessing to avoid token waste
+
+## Non-Goals
+
+- Full vector database or graph database in MVP (threshold: ~hundreds of pages)
+- Automated collection from LLM APIs (manual paste for now)
+- Real-time collaboration or multi-user features
+- Obsidian plugin development (Obsidian as viewer, not a dependency)
+- Commercial product packaging (infrastructure for now)
+
+## Rejected Alternatives
+
+| Alternative | Why Rejected |
+|-------------|-------------|
+| AnythingLLM for Web UI | Open WebUI Pipelines maps better to ETL stages; AnythingLLM is for RAG/Q&A |
+| Pure RAG pipeline | Ephemeral — doesn't compound knowledge across sessions |
+| Ollama-only stack | Too slow for production use; cloud LLMs for reasoning, Ollama for background tasks |
+| "Wiki" as product name | Kept as architectural name; "Context Engine" acknowledged for future product positioning |
+
+## Open Questions
+
+1. Should seed questions be stored as templates for repeatable multi-LLM collection?
+2. What is the right threshold for automatic supersession vs human-resolved contradiction?
+3. How should confidence scores be calibrated across different LLM sources?
+4. What's the optimal chunk size for embedding-based dedup in this domain?
+
+## project-details
+
+# Project Details: LLM-Wiki Handoff Pipeline
+
+## Source Map
+
+| # | Slug | Source | Type | Length | Primary Contribution |
+|---|------|--------|------|--------|---------------------|
+| 1 | [[chatgpt-llm-based-project-workflow]] | ChatGPT | LLM chat | 615 lines | Core concepts, problem framing, context compression as moat |
+| 2 | [[claude-multi-llm-research-synthesis-workflow]] | Claude | LLM chat | 143 lines | 4-phase pipeline, contradictions tracking, human review gate |
+| 3 | [[gemini-llm-wiki-multi-agent]] | Gemini | LLM chat | 262 lines | Two-stage ingestion, purpose.md, decay-weighted confidence, graph-typed entities |
+| 4 | [[2026-05-25-cluade-pipeline-plan]] | Claude | LLM chat | 150 lines | Pipeline implementation plan: Python core, Open WebUI, MCP, CLI |
+| 5 | [[distill-ingest]] | Claude | LLM chat | 598 lines | Methodology: 5-signal filter, quality gate, tool-specific ingest, tiered automation |
+| 6 | [[2026-05-26-claude-distill-canonical]] | Claude | LLM chat | 30 lines | Multi-source decision heuristic, MemWeaver MCP path |
+| 7 | [[2026-05-27-claude-04-summary]] | Claude | LLM chat | 185 lines | Autoresearch pattern, Chinese LLM API reference, tool landscape |
+| 8 | [[doubao]] | Web | Web article | 57 lines | API-level token/memory management, sliding window, memory architecture |
+| 9 | [[s2-notebooklm]] | Web | Web article | 61 lines | Local Memory Manager (Ollama), scaling threshold, Agent Skills Layer |
+
+## Combined Understanding
+
+### The Core Problem: Context Fragmentation
+
+Every source independently identifies the same root problem: engineers accumulate scattered, duplicated, contradictory outputs from multiple LLMs and sources. The result is that agentic coding tools (Cursor, Claude Code, OpenCode) receive polluted context — conflicting instructions, incomplete architecture, noisy raw chat dumps. Coding agents fail not because models are weak, but because **context engineering is broken**.
+
+ChatGPT states it most directly: "The biggest problem today is NOT coding. It is context fragmentation." Claude implicitly validates this by providing the review gate to catch contradictions. Gemini frames it as the transition from "stateless prompt-response loops to stateful, compounding knowledge architectures."
+
+### The Solution: LLM-Wiki as a Compounding Knowledge Layer
+
+All sources converge on the same architectural pattern: a persistent markdown wiki maintained by LLMs, sitting between raw multi-LLM research and agentic coding tools. Key properties:
+
+1. **Persistent, not ephemeral** — contrasts with RAG, which re-processes the same documents on every query
+2. **Compounding** — value increases with every ingest as cross-references, decisions, and contradictions accumulate
+3. **Structured** — wikilinks, frontmatter, typed entities, decision records, contradiction flags
+4. **LLM-maintained** — the wiki LLM (not a human) does the reading, writing, linking, and maintenance
+5. **Human-reviewed** — a review gate with concrete quality criteria ensures signal before dev tool handoff
+
+### The Pipeline: Multi-LLM Collection → Distillation → Dev Context
+
+Claude's 4-phase architecture provides the high-level structure. Gemini's 7-phase model provides finer granularity. The distill-ingest methodology operationalizes the core distillation stages.
+
+**Collection discipline:**
+- Same 3–5 seed questions across all LLMs (control the variable)
+- Force diverse angles: "core concepts, failure modes, best tools, non-obvious tradeoffs, recommended approach"
+- Save raw immediately — never paste from memory
+- Only multi-source for complex/architectural/long-lived topics; skip for simple one-offs
+- Different LLMs have genuinely different knowledge distributions: Claude reasons better, GPT-4 has broader coverage, Gemini stronger on code
+
+**Distillation methodology ([[multi-pass-distillation]]):**
+1. Collect (20 min)
+2. Filter (10 min) — 5-signal test: Specificity, Actionability, Non-obviousness, Consensus, Contradiction. Keep ≥3.
+3. Distill (30 min) — synthesize surviving content. Conflicts become explicit tradeoffs.
+4. Canonical (15 min) — dense markdown with frontmatter, facts, implementation code, tradeoffs table, ≥3 gotchas
+
+**Quality gate:**
+- Zero filler — every sentence states a specific fact
+- All tools named with version
+- Every tradeoff explicit
+- Sources listed in frontmatter
+
+**Context delivery ([[context-packs]]):**
+- Per-module bundles: architecture, APIs, DB schema, constraints, conventions, implementation order
+- Standardized exports: llms.txt (topic index), llms-full.txt (≤5MB flat dump), graph.jsonld (JSON-LD knowledge graph)
+- Portable agent skills: SKILL.md packages in `~/.claude/skills/`
+- Tool-specific integration: CLAUDE.md, .cursorrules, AGENTS.md, copilot-instructions.md
+
+## Comparison Matrix
+
+This table captures where the 9 sources diverge:
+
+| Concept | ChatGPT (S1) | Claude (S2) | Gemini (S3) | Claude (S4) | Distill-Ingest (S5) | Others (S6-S9) |
+|---------|-------------|-------------|-------------|-------------|---------------------|----------------|
+| **Pipeline stages** | Raw → clustered → summarized → canonicalized | 4-phase: Collection → Wiki → Context → Dev | 7-phase: from Exploration to Closed-Loop | Python core: ingest → refine → synthesize → export | Collect → Filter → Distill → Canonical | — |
+| **Dedup method** | Embedding clustering (OpenAI/VoyageAI/BGE) | — | Two-stage compiler (Stage 1 analysis) | SQLite dirty-only tracking | 5-signal manual scoring | — |
+| **Contradiction handling** | — | UNRESOLVED flags | SUPERSEDED with archival | — | Conflict → Decision Space (design space framing) | — |
+| **Context compression** | Research pipeline: 10K→20→2 pages | — | — | — | — | API-level: sliding window, summarization, truncation (doubao) |
+| **Knowledge decay** | — | — | Ebbinghaus-weighted confidence | — | — | Memory consolidation/forgetting (doubao) |
+| **Intent steering** | — | Implicit in schema | Explicit purpose.md | — | — | — |
+| **Scaling** | — | — | — | — | — | Vector indexing at ~hundreds of pages (s2-notebooklm) |
+| **Local LLM** | — | — | — | — | — | Ollama for background compilation (s2-notebooklm); "too slow" (S7) |
+| **Web UI** | — | — | — | Open WebUI Pipelines | — | — |
+| **MCP server** | — | — | Obsidian MCP | fastmcp with 5 tools | MCP for MemWeaver | — |
+
+## Deep Analysis
+
+### Epistemic Foundation
+
+The most important insight across all sources is the reframing of LLM outputs. They are not raw data and not ground truth — they are **first-pass synthetic knowledge**. This means:
+- ~80% is repetitive (differently phrased — requires semantic dedup, not exact match)
+- Each model has inherent drift, hallucinated edges, and training bias
+- The wiki distillation layer is where signal emerges from noise
+- Disagreements between models define the design space, not errors to eliminate
+
+This reframe justifies the entire wiki investment. Without it, the workflow looks like overhead. With it, the workflow is epistemically necessary.
+
+### Two-Phase vs Multi-Phase Ingestion
+
+There's a productive tension between Gemini's strict two-stage ingestion (analysis → generation) and the distill-ingest four-stage methodology (collect → filter → distill → canonical). They operate at different granularities:
+
+- **Two-stage ingestion** (Gemini): controls the LLM's operational flow — don't let structure and content compete for attention
+- **Four-stage methodology** (distill-ingest): controls the human's workflow — time-budgeted steps with explicit quality gates
+
+Both are correct and complementary. The two-stage pattern governs how the LLM processes each source. The four-stage pattern governs how the human manages the overall research cycle.
+
+### Context Compression as Moat
+
+ChatGPT calls context compression "the real competitive moat" — and this is the most defensible claim in the research. Better models commoditize; better context engineering differentiates. The compression pipeline (10K pages → 20 pages → 2 pages → prompts) is the core value proposition.
+
+The doubao source adds an important second level: API-call compression (sliding window, summarization, key info extraction, hard truncation). The research pipeline compresses what you know; the API level manages how you feed it to the LLM. Both are needed.
+
+### Knowledge Lifecycle Management
+
+Gemini provides the most sophisticated model: claims carry metadata (source, creation date, confidence), confidence decays exponentially (Ebbinghaus), contradictions trigger supersession with archival, and typed entities with semantic relationships enable graph traversal.
+
+Distill-ingest operationalizes a simpler version: time-budgeted steps, quality gates, gotchas capture non-obvious issues. The doubao source adds memory consolidation (periodic compression of old conversations) and forgetting (pruning low-frequency history).
+
+The pragmatic path: start with distill-ingest's methodology (simpler, immediately actionable), evolve toward Gemini's model as the wiki scales. The memory consolidation technique from doubao bridges the gap.
+
+### Pipeline Operator Architecture
+
+The pipeline operator (source 4) provides the concrete implementation architecture that all other sources call for abstractly. Key design decisions:
+- **Shared core**: all interfaces (CLI, Web UI, MCP) call into `pipeline/runner.py` — no duplication
+- **SQLite for state tracking**: dirty-only reprocessing avoids token waste
+- **Build order**: core → CLI → MCP → Web UI (MCP before Web UI because it closes the Claude Code loop)
+- **fastmcp as MCP library**: simpler than raw MCP SDK, ~50 lines for the server
+
+## Recommendations
+
+### Immediate (MVP)
+
+1. **Build the pipeline core first** — Python module with ingest → refine → synthesize → export stages, SQLite run-state tracking, config.yaml for paths/model/schedule
+2. **CLI interface** — argparse/typer with `--step`, `--watch`, `--dry-run` flags
+3. **Enforce two-stage ingestion** — Stage 1 (read-only analysis) before Stage 2 (write pages). No exceptions.
+4. **Apply the 5-signal filter** on every source — it's the cheapest quality lever
+5. **Create `purpose.md`** — one-page project thesis read before every ingest
+
+### Short-term (post-MVP)
+
+6. **Add MCP server** (fastmcp) — `run_pipeline`, `get_article`, `list_articles`, `get_run_status`, `search_wiki`
+7. **Set up Open WebUI Pipelines plugin** — `/run`, `/status`, `/preview` as chat commands
+8. **Implement closed-loop harvesting** — start with Claude Code JSONL path scanning
+9. **Add embedding-based semantic dedup** within Stage 1 analysis
+
+### Medium-term
+
+10. **Decay-weighted confidence scoring** — claim metadata with exponential decay
+11. **Systematic supersession** — automatic stale→newer archival for contradictions
+12. **Graph-layered entity extraction** — typed entities with semantic relationships
+13. **Automated context pack generation** — per-module bundles and standardized exports
+
+## Implementation Notes
+
+### Tech Stack (from sources)
+
+| Component | Technology | Source |
+|-----------|-----------|--------|
+| Pipeline core | Python 3.12, anthropic SDK, pydantic | S4 (cluade-pipeline-plan) |
+| State tracking | SQLite3 (dirty-only reprocessing) | S4 |
+| CLI | argparse or typer | S4 |
+| Web UI | Open WebUI Pipelines plugin | S4 |
+| MCP server | fastmcp | S4 |
+| Local LLM | Ollama (background compilation only) | S9 (s2-notebooklm) |
+| Vector/graph index | ChromaDB or SQLite/Neo4j (>hundreds of pages) | S9 |
+| Obsidian integration | Obsidian MCP server (cyanheads/mcp-obsidian) | S3 (Gemini) |
+| Embedding models | OpenAI/VoyageAI/BGE/Jina | S1 (ChatGPT) |
+
+### Directory Structure
+
+```
+project/
+├── purpose.md                    # Intent guidance (read every ingest)
+├── CLAUDE.md                     # Schema + conventions (for Claude Code)
+├── AGENTS.md                     # For OpenCode
+├── .cursorrules                  # For Cursor
+├── raw/
+│   ├── llm/                      # LLM chat exports (immutable)
+│   └── web/                      # Web article clips
+├── wiki/
+│   ├── sources/                  # Source summary pages
+│   ├── concepts/                 # Cross-linked topic pages
+│   ├── synthesis/                # Evolving thesis + export cycles
+│   ├── index.md                  # Content catalog
+│   └── log.md                    # Append-only timeline
+├── pipeline/                     # Pipeline core
+│   ├── config.yaml
+│   ├── ingest.py
+│   ├── refine.py
+│   ├── synthesize.py
+│   ├── export.py
+│   └── runner.py
+└── scripts/
+    ├── run_pipeline.py           # CLI entry point
+    └── scheduler.py              # Autonomous daemon (APScheduler)
+```
+
+### Build Order
+
+```
+Core (pipeline/) → CLI (scripts/) → MCP server (mcp_server/) → Web UI (open_webui/)
+```
+
+Each layer adds features without rewriting the core. The MCP server comes before Web UI because it closes the Claude Code loop: Claude generates wiki → MCP exposes it back → Claude references live wiki state.
+
+## Risks and Mitigations
+
+| Risk | Likelihood | Impact | Mitigation |
+|------|-----------|--------|------------|
+| Wiki maintenance overhead kills momentum | Medium | High | Start with 80-min-per-topic budget (distill-ingest). Lint every 3–5 ingests. Weekly maintenance. |
+| Hallucination amplification from multi-LLM sources | Medium | High | Never skip human review gate. Apply 5-signal filter. Cross-check claims across sources. |
+| LLM token costs for frequent re-processing | Medium | Medium | Dirty-only reprocessing via SQLite. Local Ollama for background tasks. Batch ingests. |
+| Context window limits on large wiki | Low | Medium | Hierarchical tree indexing (PageIndex) for long docs. Context packs scope per task. |
+| Scope creep (building product vs solving problem) | Medium | High | MVP: CLI-only, no UI, no vector DB. Pipeline quality over features. |
+
+## Open Questions for Further Research
+
+1. **Seed question templates**: Should collection use stored prompt templates (topic → 5 seed questions auto-generated)? Could reduce collection time below 20 min.
+2. **Supersession threshold**: When should contradictions auto-resolve (newer source overrides older) vs require human judgment? A confidence delta threshold?
+3. **Confidence calibration**: How to normalize confidence scores across LLMs with different calibration curves? Claude tends to hedge; ChatGPT is more declarative.
+4. **Chunking strategy for dedup**: What's the optimal chunk size and overlap for embedding-based dedup on LLM outputs (long-form analysis, not code)?
+5. **Dev session harvesting sensitivity**: How to extract signal from noisy dev session logs without amplifying dead ends and debugging false starts?
+6. **Graph query interface**: If typed entities with semantic relationships are implemented, what query language should coding agents use to traverse the knowledge graph?
+7. **Multi-project knowledge transfer**: Can decision records and concepts from one project inform a related project's wiki cold start?

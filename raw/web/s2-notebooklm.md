@@ -1,8 +1,9 @@
 ---
-type: web-clip
+type: web-article
 source: web
 date: '2026-05-26'
-topic: S2 Notebooklm
+topic: "S2 NotebookLM: Second Brain + Memory System"
+url: "https://unknown-source-s2-notebooklm"
 status: ingested
 ---
 

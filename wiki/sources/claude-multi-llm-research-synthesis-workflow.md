@@ -5,32 +5,25 @@ source: claude
 date: 2026-05-24
 ---
 
-# Claude — Multi-LLM Research Synthesis Workflow
+# Claude: Multi-LLM Research Synthesis Workflow
 
 ## Key Claims
 
-- The 6-step workflow **maps almost perfectly onto Karpathy's llm-wiki pattern** — multi-LLM collection → wiki distillation → dev context package is a meaningful upgrade over "paste chat into Cursor".
-- **Critical reframe:** LLM outputs ≠ raw sources. They are *synthetic knowledge* — useful signal but drifted, hallucinated-at-edges, biased. Treat as **first-pass synthesis**, not ground truth. This makes the wiki layer *more* important.
-- Four-phase architecture: Multi-LLM Collection → Wiki Distillation → Dev Context Package → Dev Tools.
-- Wiki structure should include: `index.md`, `log.md`, `synthesis.md`, `decisions.md`, **`contradictions.md`**, `concepts/`.
-- **[[contradictions-tracking]]** is where multi-LLM input earns its keep — explicit UNRESOLVED status for disagreements before dev starts.
-- Operational rhythm: ingest one file at a time; **lint every 3–5 ingests**; query → file insights back into wiki.
-- **[[human-review-gate]]** between Phase 2 (wiki) and Phase 3 (dev context) is **non-negotiable** — never feed unreviewed synthesis to a code agent.
-- Phase 3 compiles targeted [[context-packs]] per task/feature — constraints → architecture decisions → acceptance criteria → task list. **Don't dump the full wiki.**
-- **[[decision-records]]** must include source attribution, confidence levels, and runner-up alternatives — makes dev context defensible.
-- Recommended tools: Obsidian (wiki IDE), Claude Code/OpenCode (wiki maintainer), qmd (BM25+vector search + MCP), obsidian-llm-wiki plugin, LLM-Wiki-Agent-Workflow-Demo (4 agent roles).
-- Watch-outs: multi-LLM outputs can amplify hallucinations if contradictions aren't caught; wiki maintenance overhead grows; Phase 3 compile is currently manual (needs prompt template/script eventually).
+1. **LLM outputs ≠ raw sources** — they are synthetic knowledge, first-pass synthesis with inherent drift, hallucinated edges, and model bias. This makes the wiki distillation layer more important, not less.
+2. **Same prompt across models** — control the variable. Force diverse angles by asking each model: "What are the main approaches?", "What are the trade-offs?", "What would you warn against?"
+3. **Wiki as persistent compounding artifact** — contradictions already flagged, cross-references built, synthesis already reflecting everything ingested. Contrast with RAG which re-discovers on every query.
+4. **Decision records need source attribution and confidence** — for engineering decisions, you need to know *why* a choice was made, which LLM suggested it, what the runner-up was, and confidence level.
+5. **Human review gate is non-negotiable** — never feed unreviewed wiki synthesis to a code agent.
+6. **Lint every 3–5 ingests** — find contradictions, orphan concepts, stale claims.
 
 ## Unique Insights
 
-- Identical prompts across models with controlled variables (source, date, prompt_hash tags).
-- Prompt set recommendation: "What are the main approaches?", "What are the trade-offs?", "What would you warn against?"
-- `contradictions.md` format with per-model positions and UNRESOLVED status — concrete example for auth strategy.
-- Explicit Phase 3 output files: `CLAUDE.md`/`AGENTS.md`, `spec.md`, `architecture.md`, `tasks.md`.
-- Weekly lint pass commitment to manage wiki maintenance overhead.
+- Explicit **contradictions tracking** dedicated page with UNRESOLVED flags is Claude's key addition — "this is where multi-LLM input earns its keep"
+- Recommends specific tools: Obsidian (wiki IDE), [qmd](https://github.com/tobi/qmd) (BM25+vector search), obsidian-llm-wiki plugin, multi-agent variant (WayneChou-bot/LLM-Wiki-Agent-Workflow-Demo)
+- Identifies risks: multi-LLM outputs can amplify hallucinations if contradictions aren't caught; wiki maintenance grows and requires weekly commitment; the Phase 3 compile step is currently manual
+- Dev context package structure: constraints → architecture decisions → acceptance criteria → task list (note: dump the full wiki, compile targeted package per task)
+- **4-phase architecture**: (1) Multi-LLM Collection, (2) Wiki Distillation, (3) Dev Context Package, (4) Dev Tools
 
 ## Contradictions
 
-- **Supports LLM-Wiki framing** — directly contradicts ChatGPT's [[wiki-vs-context-engine]] "don't build a wiki" advice. Aligns with Gemini's [[compounding-knowledge-layer]].
-- **Human-in-the-loop emphasis** — stronger than ChatGPT's automated pipeline vision. ChatGPT optimizes for automated distillation; Claude insists on human review gate and manual Phase 3 compile (for now).
-- **Dedup approach** — Claude relies on explicit contradiction tracking and lint passes rather than ChatGPT's embedding-based [[semantic-deduplication]] cluster pipeline.
+- None with ChatGPT on core approach. Both validate the pipeline. Claude adds more operational structure (contradictions tracking, lint rhythm, human review gate) while ChatGPT focuses more on architectural vision (context compression as moat, context packs as killer feature).

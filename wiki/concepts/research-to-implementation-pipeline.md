@@ -1,46 +1,25 @@
 ---
 type: concept
-sources: [chatgpt-llm-based-project-workflow, gemini-llm-wiki-multi-agent, claude-multi-llm-research-synthesis-workflow]
-last_updated: 2026-05-24
+sources: [claude-multi-llm-research-synthesis-workflow, 2026-05-26-claude-distill-canonical, 2026-05-27-claude-04-summary]
+last_updated: 2026-05-29
 ---
 
-# Research-to-Implementation Pipeline
+# Research to Implementation Pipeline
 
 ## Consensus
 
-All sources describe multi-LLM research → compiled knowledge → dev-tool handoff. **Never feed raw chat dumps directly to coding agents.**
+The unified pipeline spans multi-LLM collection → wiki distillation → dev context packaging → coding tools. Key refinements:
 
-Unified view merging all three sources:
+**When to multi-source**: only for complex, architectural, or long-lived topics. Simple one-off questions don't benefit from triangulation. Different LLMs have genuinely different knowledge distributions — Claude reasons better, GPT-4 has broader coverage, Gemini is stronger on code details.
 
-```
-PHASE 1: MULTI-LLM COLLECTION
-  Same prompts → Claude / GPT / Gemini → raw/ (immutable, tagged)
-        ↓
-PHASE 2: WIKI DISTILLATION
-  [[two-stage-ingestion]] or [[semantic-deduplication]]
-  → concepts/, sources/, synthesis, [[contradictions-tracking]]
-  → lint every 3–5 ingests
-        ↓
-PHASE 3: DEV CONTEXT PACKAGE  ([[human-review-gate]] required)
-  Compile [[context-packs]] per task: spec, architecture, tasks, AGENTS.md
-        ↓
-PHASE 4: DEV TOOLS
-  Cursor / Claude Code / VSCode + MCP / Skills / llms.txt
-        ↓
-PHASE 5: CLOSED LOOP  ([[closed-loop-harvesting]])
-  Dev session logs → raw/sessions/ → re-ingest → wiki stays evergreen
-```
+**Core discipline**: Never paste raw chat logs into coding tools. Always Collect → Distill → One canonical file → Ingest first.
+
+**Complementary pattern — Karpathy autoresearch**: a related loop that automates the research phase itself: pick niche → design tiny loop → run experiments → measure → productize. The autoresearch loop generates the research; the llm-wiki pattern structures and distills it.
 
 ## Divergence
 
-| Source | Emphasis |
-|--------|----------|
-| ChatGPT | Automated dedup/cluster pipeline; context compression as moat |
-| Gemini | 7 explicit phases; Obsidian MCP; machine-readable exports |
-| Claude | Human review gate; contradictions.md; manual Phase 3 compile for now |
-
-Differences are emphasis, not architecture — all describe the same loop.
+_(Single comparison — both sources from Claude, consistent.)_
 
 ## Decision
 
-**Lean: adopt Claude's 4-phase model with Gemini's closed-loop Phase 5 and ChatGPT's compression goals.** This project's wiki submodule already implements Phases 1–2 manually.
+The pipeline is confirmed. Add a decision gate: before multi-source collection, evaluate whether the topic warrants the investment (complex/architectural/long-lived = yes; simple one-off = no).

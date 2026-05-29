@@ -1,33 +1,32 @@
 ---
 type: concept
-sources: [chatgpt-llm-based-project-workflow, gemini-llm-wiki-multi-agent, claude-multi-llm-research-synthesis-workflow]
-last_updated: 2026-05-24
+sources: [claude-multi-llm-research-synthesis-workflow, gemini-llm-wiki-multi-agent]
+last_updated: 2026-05-29
 ---
 
-# Closed-Loop Harvesting
+# Closed Loop Harvesting
 
 ## Consensus
 
-Dev session transcripts flow back into `raw/sessions/` and re-enter ingestion, keeping the wiki evergreen ([[gemini-llm-wiki-multi-agent]]).
+The concept is confirmed by both sources. Claude implies it (file query answers back into wiki). Gemini provides the most detailed implementation specification.
 
-| Dev tool | Log location | Harvester |
-|----------|-------------|-----------|
-| Claude Code | `~/.claude/projects/*/*.jsonl` | `llmwiki.adapters.claude_code` |
-| Cursor | `~/Library/.../Cursor/workspaceS...` | `llmwiki.adapters.cursor` |
-| Gemini CLI | `~/.gemini/` | `llmwiki.adapters.gemini_cli` |
-
-Re-ingestion flags where generated code deviates from planned architecture. Extends [[research-to-implementation-pipeline]] Phase 5.
-
-ChatGPT mentions "Continuous Feedback + Memory" at high level. Claude doesn't detail harvest mechanics.
+**Gemini's implementation:**
+- Development tools write chronological conversation logs to local project directories
+- Harvester adapters scan specific paths per tool:
+  - Claude Code: `~/.claude/projects/*/*.jsonl`
+  - Cursor: `~/Library/.../Cursor/workspaceS...`
+  - Gemini CLI: `~/.gemini/`
+- Running `llmwiki sync` converts logs to markdown under `raw/sessions/`
+- These logs run through the ingestion pipeline, flagging discrepancies between generated code and planned architecture
+- Keeps the wiki evergreen and in sync with the actual codebase
 
 ## Divergence
 
-| Source | View |
-|--------|------|
-| Gemini | Automated harvester adapters; cron/git hook; `llmwiki sync` |
-| ChatGPT | Continuous feedback loop in long-term vision |
-| Claude | Not detailed |
+| Aspect | Claude | Gemini |
+|--------|-------|--------|
+| Specificity | Conceptual — "don't let insights die" | Concrete — tool-specific paths, harvester adapters, sync command |
+| Implementation | Manual query-filing | Automated log scanning + re-ingestion pipeline |
 
 ## Decision
 
-**Post-MVP.** Evaluate Pratiyush llm-wiki session sync adapters when core ingest/export pipeline is stable. Aligns with [[mvp-scope]].
+Closed-loop harvesting is confirmed as a core workflow component. Gemini's tool-specific harvester paths provide the implementation blueprint for automation post-MVP.

@@ -1,30 +1,29 @@
 ---
 type: concept
-sources: [chatgpt-llm-based-project-workflow, gemini-llm-wiki-multi-agent, claude-multi-llm-research-synthesis-workflow]
-last_updated: 2026-05-24
+sources: [claude-multi-llm-research-synthesis-workflow, distill-ingest]
+last_updated: 2026-05-29
 ---
 
 # Human Review Gate
 
 ## Consensus
 
-Mandatory checkpoint between wiki distillation (Phase 2) and dev context packaging (Phase 3).
+Both sources agree human review is non-negotiable. Claude establishes it as a gate between Phase 2 (distillation) and Phase 3 (dev context). The distill-ingest guide provides concrete quality criteria for what review should check:
 
-- Never feed unreviewed wiki synthesis to a code agent ([[claude-multi-llm-research-synthesis-workflow]]).
-- Human browses compiled wiki, resolves [[contradictions-tracking|unresolved contradictions]], approves export.
-- Ingest workflow requires human confirmation before marking sources ingested (AGENTS.md).
-- Gemini adds Obsidian review phase; ChatGPT de-emphasizes but doesn't eliminate human oversight.
-
-Phase 3 compile (wiki → dev context) is currently **manual** — export-brief skill is the gate.
+- **Zero filler** — every sentence states a specific fact (name, number, command, path)
+- **All tools versioned** — never say "use Redis", say "use Redis 7.4 with RediSearch 2.8"
+- **Tradeoffs explicit** — every decision choice has a tradeoffs table
+- **≥3 gotchas** — non-obvious issues per article
+- **Sources listed** — frontmatter includes all source LLMs
 
 ## Divergence
 
-| Source | Human involvement |
-|--------|------------------|
-| Claude | **Non-negotiable** gate; weekly lint; manual Phase 3 compile |
-| Gemini | Obsidian synthesis & verification phase; lint health checks |
-| ChatGPT | Optimize for automated distillation; less explicit gate |
+| Aspect | Claude | Distill-Ingest |
+|--------|-------|---------------|
+| Gate position | Between wiki and dev tools | At canonical file completion |
+| Criteria | General — "flag contradictions" | Specific — zero filler, versioned, gotchas |
+| Enforcement | Human judgment | Checklist with concrete tests |
 
 ## Decision
 
-**Keep human review gate for export-brief and ingest confirmation.** Automate ingest mechanics ([[two-stage-ingestion]]) but not approval. Resolve [[contradictions-tracking]] before export.
+The human review gate checks against the distill-ingest quality criteria (zero filler, versioned, tradeoffs explicit, gotchas, sources). Review happens after canonical file is written but before it's exported to dev tools.

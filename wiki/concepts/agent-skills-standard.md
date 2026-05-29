@@ -1,1 +1,0 @@
-- **Description**: Open Agent Skills format used to package specialized domain expertise into reusable instructions.

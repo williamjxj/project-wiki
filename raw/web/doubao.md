@@ -1,9 +1,9 @@
 ---
-type: web-clip
+type: web-article
 source: web
 date: '2026-05-26'
-topic: "LLM\u7F51\u9875\u5BF9\u8BDD\u6846\u4E0EAPI\u8C03\u7528\uFF1A\u4E0A\u4E0B\u6587\
-  \u53CAToken\u5185\u5B58\u7BA1\u7406\u8BE6\u89E3"
+topic: "LLM网页对话框与API调用：上下文及Token内存管理详解"
+url: "https://unknown-source-doubao"
 status: ingested
 ---
 

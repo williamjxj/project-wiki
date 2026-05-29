@@ -1,32 +1,28 @@
 ---
 type: concept
-sources: [chatgpt-llm-based-project-workflow, gemini-llm-wiki-multi-agent, claude-multi-llm-research-synthesis-workflow]
-last_updated: 2026-05-24
+sources: [claude-multi-llm-research-synthesis-workflow, gemini-llm-wiki-multi-agent]
+last_updated: 2026-05-29
 ---
 
 # Two-Stage Ingestion
 
 ## Consensus
 
-Ingestion must separate analysis from file generation ([[gemini-llm-wiki-multi-agent]]):
+Both Claude and Gemini define a two-stage ingestion process. Gemini formalizes it most explicitly:
 
-| Stage | Role | Input | Output |
-|-------|------|-------|--------|
-| **Stage 1: Structural Analysis** | Analytical reviewer | Raw transcripts, existing wiki, [[purpose-steering]] (`purpose.md`) | Conceptual maps, detected conflicts, recommended edits — **no file writes** |
-| **Stage 2: Generation & Integration** | Technical writer | Stage 1 blueprint + `schema.md` | New/updated concept pages, bidirectional links, index/log updates |
+- **Stage 1 (Structural Analysis):** The model analyzes raw sources alongside the wiki index, maps entities, identifies overlaps, detects contradictions. No files are modified — the model outputs a structured blueprint of required changes.
+- **Stage 2 (Generation & Linkage):** The model executes the blueprint — updates existing pages, creates new concept pages, establishes bidirectional links, logs operations.
 
-Single-pass prompts fail on multi-megabyte transcripts. Aligns with [[multi-pass-distillation]] — specifically the ingest write path.
-
-Claude's workflow mirrors this: discuss takeaways (Stage 1) → write wiki pages (Stage 2) → human confirm. ChatGPT's embedding dedup maps to Stage 1 analysis.
+This separation prevents formatting and structural organization competing for model attention, which can cause corrupted formatting and broken directories.
 
 ## Divergence
 
-| Source | View |
-|--------|------|
-| Gemini | Two explicit LLM stages: analyze blueprint first, then write files |
-| Claude | Discuss before writing + human confirm before marking ingested |
-| ChatGPT | Embedding clustering + contradiction detection as automated Stage 1 |
+| Aspect | Claude | Gemini |
+|--------|-------|--------|
+| Formalization | Implicit in Phase 2 workflow | Explicit two-stage pipeline with blueprint |
+| Tools | Generic "LLM writes, you browse" | OpenKB or Nashsu desktop app, file watcher |
+| Input guidance | General schema | purpose.md for steering + CLAUDE.md for structure |
 
 ## Decision
 
-**Adopt two-stage ingest.** Stage 1 = analysis + dedup + [[contradictions-tracking]]; Stage 2 = wiki writes. Add embedding clustering post-MVP for scale (ChatGPT).
+The two-stage ingestion pipeline (analysis before generation) is confirmed — it is the canonical ingestion method. Stage 1 is read-only analysis outputting a blueprint; Stage 2 executes the blueprint.

@@ -5,34 +5,25 @@ source: chatgpt
 date: 2026-05-24
 ---
 
-# ChatGPT — LLM-Based Project Workflow
+# ChatGPT: LLM-Based Project Workflow
 
 ## Key Claims
 
-- The user's proposed flow — multi-LLM research → distillation → canonical knowledge → dev-tool handoff → agentic implementation — is a strong, emerging workflow category aligned with real engineering needs.
-- The core problem is **[[context-fragmentation]]**: scattered, duplicated, contradictory research across chats, docs, and notes — not lack of coding ability.
-- **[[semantic-deduplication]]** is the most critical processing stage; without it, context window pollution degrades agent output quality (~80% of LLM outputs are repetitive but differently phrased).
-- Do not optimize for a static "wiki" — evolve toward a **[[wiki-vs-context-engine]]** (AI Research OS / Canonical Context Engine / Project Intelligence Layer).
-- Store **[[decision-records]]** (decision + rationale + confidence + tradeoffs), not undifferentiated notes — this is what makes output useful for agentic coding.
-- Optimize for **[[implementation-readiness]]**: the output must answer "Can Cursor implement this correctly?"
-- **[[context-compression]]** is the core moat — compress 10,000 pages → 20 → 2 → implementation prompts; future winners are better context engineering systems, not better models.
-- Use **[[multi-pass-distillation]]**: raw → clustered → summarized → canonicalized → implementation-oriented (not raw → final in one step).
-- Generate **[[context-packs]]** as the killer feature — scoped bundles (architecture, APIs, DB schema, constraints, conventions, implementation order) optimized per dev tool (Cursor, Claude Code, OpenCode, etc.).
-- Canonical outputs should include: PRD, ADRs, tech stack, constraints, implementation plan, and tool-specific context packs.
-- **[[mvp-scope]]**: CLI-first; inputs = pasted chats, markdown, URLs; processing = chunk, dedup, cluster, summarize; outputs = `architecture.md`, `implementation-plan.md`, `cursor-context.md`. Do not start with UI.
-- Long-term: continuous feedback loop where discussions, decisions, implementations, bugs, and PRs all improve project intelligence — an AI-native software engineering memory system.
-- Commercially viable positioning: "Perplexity + Notion + Cursor Memory + Deep Research + ADR system" for engineering projects.
+1. **Context fragmentation is the real problem** — not coding ability. Engineers have scattered, duplicated, contradictory outputs from ChatGPT, Claude, Gemini, Reddit, docs, PDFs, and notes, with no canonical source of truth.
+2. **Semantic deduplication is the most critical pipeline stage** — ~80% of LLM output is repetitive but phrased differently. Without dedup, context windows are polluted, agents confused, implementation quality degraded.
+3. **Store decisions, not notes** — the system should persist decision + rationale + confidence + tradeoffs. This is far more valuable for agentic coding than traditional note-taking.
+4. **Context compression is the real competitive moat** — future winners are not better models but better context engineering: 10,000 pages → 20 pages → 2 pages → implementation prompts.
+5. **Multi-pass distillation is essential** — raw → clustered → summarized → canonicalized → implementation-oriented, not raw → final in one step.
+6. **Implementation readiness is the north star** — every output should answer "Can Cursor implement this correctly?"
 
 ## Unique Insights
 
-- Proposes atomic knowledge units as the ingestion primitive (topic, claim, source, confidence, tags) rather than whole documents.
-- Recommends a knowledge graph layer (Neo4j) to capture dependency/conflict relationships (e.g., "Feature A → Service B → Redis → conflicts with serverless scaling").
-- Suggests hybrid storage: raw docs (S3/local), structured knowledge (PostgreSQL), vectors (Qdrant/Weaviate/pgvector).
-- Names "context packs" as a CLI command pattern: `generate-context auth-system`.
-- Explicitly warns against starting with UI — pipeline quality and distillation quality matter more.
+- The system should be called a "Canonical Context Engine" or "Project Intelligence Layer" rather than a "wiki", which implies static human-edited content.
+- A "Context Packs" feature could be the killer app: per-module optimized bundles (arch + APIs + DB schema + constraints + coding conventions + implementation order) generated on demand for coding agents.
+- The long-term vision is an "AI-native software engineering memory system" where every discussion, decision, implementation, bug, and PR continuously improves project intelligence.
+- Suggests avoiding UI-first development — start with pipeline quality and CLI; UI is post-MVP.
+- Identifies the product gap: AI coding tools lack durable memory and canonical project understanding. The proposed system = Perplexity + Notion + Cursor Memory + Deep Research + ADR system for engineering.
 
 ## Contradictions
 
-- **Wiki naming (resolved):** ChatGPT argued against "wiki" framing — resolved in [[wiki-vs-context-engine]] as 2:1 lean toward LLM-Wiki; objection was about static wiki assumptions, not the compiling pattern.
-- **Dedup mechanism (merged):** ChatGPT favors embedding clustering; Gemini favors [[two-stage-ingestion]]; Claude favors [[contradictions-tracking]] + lint — merged in [[semantic-deduplication]] Decision as complementary, not exclusive.
-- **Automation vs human gate (merged):** ChatGPT optimizes for automated distillation; Claude/Gemini require [[human-review-gate]] — merged as automate ingest mechanics, human approves export.
+- ChatGPT argues the system should NOT be called a "wiki" (too static/manual), preferring "Context Engine" — this is a naming tension resolved in [[wiki-vs-context-engine]] by keeping "LLM-Wiki" as the architectural pattern name while acknowledging the product distinction.

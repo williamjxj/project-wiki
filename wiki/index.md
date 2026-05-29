@@ -4,45 +4,39 @@
 
 ## Sources
 
-- [[chatgpt-llm-based-project-workflow]] — ChatGPT analysis of multi-LLM research → llm-wiki → agentic coding pipeline
-- [[gemini-llm-wiki-multi-agent]] — Gemini comprehensive evaluation of LLM-Wiki in multi-agent dev
-- [[claude-multi-llm-research-synthesis-workflow]] — Claude assessment mapping workflow to Karpathy's pattern
+- [[chatgpt-llm-based-project-workflow]] — ChatGPT analysis: multi-LLM research → llm-wiki → agentic coding pipeline
+- [[claude-multi-llm-research-synthesis-workflow]] — Claude assessment: 4-phase pipeline with contradictions tracking, human review gate
+- [[gemini-llm-wiki-multi-agent]] — Gemini comprehensive evaluation: two-stage ingestion, purpose steering, graph-layered entities
 - [[2026-05-25-cluade-pipeline-plan]] — Claude plan for Web UI, autonomous scripts, MCP over pipeline core
 - [[distill-ingest]] — Claude methodology guide: Collect → Filter → Distill → Canonical File → Ingest pipeline
+- [[2026-05-26-claude-distill-canonical]] — Claude summary: multi-source decision heuristic, MemWeaver MCP integration
+- [[2026-05-27-claude-04-summary]] — Claude notes: Karpathy autoresearch, Chinese LLM API reference, tool landscape
+- [[doubao]] — Web article: LLM web dialogue vs API context and token management
+- [[s2-notebooklm]] — Web article: Second Brain + Memory system architecture
 
 ## Concepts
 
 - [[context-fragmentation]] — scattered, duplicated research as the core engineering problem
-- [[research-to-implementation-pipeline]] — unified 5-phase flow from multi-LLM research to agentic coding
 - [[compounding-knowledge-layer]] — persistent wiki artifact vs ephemeral RAG
-- [[llm-outputs-as-synthetic-sources]] — LLM exports are first-pass synthesis, not ground truth
-- [[semantic-deduplication]] — dedup via embeddings, two-stage analysis, and lint
-- [[two-stage-ingestion]] — structural analysis before file generation
+- [[semantic-deduplication]] — embedding-based dedup as critical pipeline gate
+- [[decision-records]] — decisions with rationale, confidence, source, tradeoffs
+- [[context-compression]] — multi-tier compression as competitive advantage
+- [[context-packs]] — per-feature dev-tool handoff bundles
 - [[multi-pass-distillation]] — progressive raw → canonicalized refinement
-- [[contradictions-tracking]] — explicit UNRESOLVED flags for multi-LLM disagreements
-- [[decision-records]] — decisions with rationale, confidence, source, runner-up
-- [[context-packs]] — scoped dev-tool handoff bundles
-- [[context-compression]] — tiered compression as competitive moat
 - [[implementation-readiness]] — success criterion: can agentic tools implement correctly?
+- [[llm-outputs-as-synthetic-sources]] — LLM exports are first-pass synthesis, not ground truth
+- [[mvp-scope]] — CLI-first, no UI, pipeline quality over features
+- [[contradictions-tracking]] — explicit UNRESOLVED flags for multi-LLM disagreements
 - [[human-review-gate]] — mandatory review before dev context export
+- [[research-to-implementation-pipeline]] — unified 4-phase flow from multi-LLM research to agentic coding
 - [[wiki-vs-context-engine]] — naming tension (resolved: adopt LLM-Wiki)
-- [[purpose-steering]] — purpose.md intent guidance alongside schema
-- [[closed-loop-harvesting]] — dev session logs back into raw/ for re-ingest
-- [[mvp-scope]] — start with markdown wiki submodule, automate incrementally
-- [[pipeline-operator]] — implemented FastAPI + React operator vs Open WebUI alternative
+- [[purpose-steering]] — project-level intent guidance alongside schema
+- [[closed-loop-harvesting]] — dev session insights back into raw/ for re-ingest
+- [[two-stage-ingestion]] — structural analysis before file generation
+- [[pipeline-operator]] — Python core module with CLI, Open WebUI, MCP interfaces
 
 ## Synthesis
 
 - [[evolving-thesis]] — running synthesis of all ingested research
-- [[project-brief]] — export cycle 1 draft (pending approval)
-- [[2026-05-26-claude-distill-canonical]] — Integrating MCP tools to make MemWeaver a live memory layer for IDEs, focusing on the distillation process from multiple LLMs.
-- [[mcp-server]] — Documentation on integrating `mcp-server` tools for MemWeaver.
-- [[distill-canonical]] — Guidelines for creating canonical files from multi-LLM outputs.
-- [[web-dialogue-context]] — 网页端大模型对话框自动累加全部聊天历史，每轮对话都带入全程所有问答。
-- [[api-context-management]] — 开发者全权接管上下文，可自主决定每轮请求带不带历史、带多少轮历史。
-- [[test-no-fm]] — This document serves as a test case to validate the auto pipeline's ability to handle raw content lacking frontmatter.
-- [[test-no-fm]] — A simple markdown document with no YAML frontmatter.
-- [[context-management-web-api]] — Context Management in Web Dialogues vs. API Calls
-- [[token-control-systems]] — Token Control Systems in Web Dialogues vs. API Calls
-- [[web-dialogue-vs-api]] — Web Dialogue vs. API: Context Management
-- [[distill-canon]] — Summarizes key claims about integrating MCP servers and distilling LLM outputs for long-term searchability.
+- [[project-brief]] — export snapshot (current: cycle 4)
+- [[project-details]] — deep analysis companion (current: cycle 4)

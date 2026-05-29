@@ -1,31 +1,31 @@
 ---
 type: concept
-sources: [chatgpt-llm-based-project-workflow, gemini-llm-wiki-multi-agent, claude-multi-llm-research-synthesis-workflow]
-last_updated: 2026-05-24
+sources: [chatgpt-llm-based-project-workflow, distill-ingest]
+last_updated: 2026-05-29
 ---
 
 # Multi-Pass Distillation
 
 ## Consensus
 
-Do not go raw → final in one step ([[chatgpt-llm-based-project-workflow]]). Use progressive refinement:
+ChatGPT defines the general pipeline (raw → clustered → summarized → canonicalized → implementation-oriented). The distill-ingest guide operationalizes this into four discrete stages with concrete methodology:
 
-```
-raw → clustered → summarized → canonicalized → implementation-oriented
-```
+1. **Collect** (20 min): Ask same 3–5 seed questions across all LLMs. Save raw immediately — never paste from memory.
+2. **Filter** (10 min): Apply **5-signal test** — score each paragraph on Specificity, Actionability, Non-obviousness, Consensus, Contradiction. Keep only paragraphs scoring ≥3.
+3. **Distill** (30 min): Synthesize surviving content into structured form. LLM disagreements become explicit tradeoffs (Conflict → Decision Space).
+4. **Canonical** (15 min): Write dense markdown with frontmatter, Facts (bullets), Implementation (code), Tradeoffs (table), Gotchas (≥3).
 
-Each pass reduces noise and increases actionability. Works with [[semantic-deduplication]] at the clustering stage and [[decision-records]] at the canonicalization stage.
-
-Gemini implements this via [[two-stage-ingestion]] (analyze → write). Claude's ingest-one-at-a-time + lint rhythm is a manual multi-pass. ChatGPT names five explicit distillation stages.
+**Quality gate**: zero filler, every tool named with version, every tradeoff explicit.
 
 ## Divergence
 
-| Source | View |
-|--------|------|
-| ChatGPT | Five-stage pipeline: raw → clustered → summarized → canonicalized → implementation-oriented |
-| Gemini | Two-stage ingest compiler; multi-pass at wiki compilation layer |
-| Claude | One source per ingest + lint every 3–5 ingests as quality passes |
+| Aspect | ChatGPT | Distill-Ingest |
+|--------|---------|---------------|
+| Stages | raw → clustered → summarized → canonicalized | Collect → Filter → Distill → Canonical |
+| Filter method | Embedding-based dedup | 5-signal manual scoring |
+| Time budget | None specified | ~80 min per topic |
+| Quality criteria | Implementation readiness | Zero filler, versioned tools, explicit tradeoffs, gotchas |
 
 ## Decision
 
-**Lean: ChatGPT's five-stage model as the conceptual frame; Gemini's [[two-stage-ingestion]] as the operational ingest implementation; Claude's lint cadence as the quality gate between passes.**
+Combine both. ChatGPT's embedding dedup handles the automated dedup layer; distill-ingest's 5-signal test provides the manual review methodology for human-in-the-loop quality.

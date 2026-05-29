@@ -1,1 +1,0 @@
-- **Description**: Local Ollama instance responsible for background processing and memory management.

@@ -1,0 +1,42 @@
+# Distill-Wiki-Pipeline
+> Multi-LLM research pipeline: collect LLM outputs, distill into compounding wiki, export synthesis for agentic development
+
+## Sources
+- [2026-05-25-cluade-pipeline-plan](wiki/wiki/sources/2026-05-25-cluade-pipeline-plan.md)
+- [2026-05-26-claude-distill-canonical](wiki/wiki/sources/2026-05-26-claude-distill-canonical.md)
+- [2026-05-27-claude-04-summary](wiki/wiki/sources/2026-05-27-claude-04-summary.md)
+- [chatgpt-llm-based-project-workflow](wiki/wiki/sources/chatgpt-llm-based-project-workflow.md)
+- [claude-multi-llm-research-synthesis-workflow](wiki/wiki/sources/claude-multi-llm-research-synthesis-workflow.md)
+- [distill-ingest](wiki/wiki/sources/distill-ingest.md)
+- [doubao](wiki/wiki/sources/doubao.md)
+- [gemini-llm-wiki-multi-agent](wiki/wiki/sources/gemini-llm-wiki-multi-agent.md)
+- [s2-notebooklm](wiki/wiki/sources/s2-notebooklm.md)
+
+## Concepts
+- [closed-loop-harvesting](wiki/wiki/concepts/closed-loop-harvesting.md)
+- [compounding-knowledge-layer](wiki/wiki/concepts/compounding-knowledge-layer.md)
+- [context-compression](wiki/wiki/concepts/context-compression.md)
+- [context-fragmentation](wiki/wiki/concepts/context-fragmentation.md)
+- [context-packs](wiki/wiki/concepts/context-packs.md)
+- [contradictions-tracking](wiki/wiki/concepts/contradictions-tracking.md)
+- [decision-records](wiki/wiki/concepts/decision-records.md)
+- [human-review-gate](wiki/wiki/concepts/human-review-gate.md)
+- [implementation-readiness](wiki/wiki/concepts/implementation-readiness.md)
+- [llm-outputs-as-synthetic-sources](wiki/wiki/concepts/llm-outputs-as-synthetic-sources.md)
+- [multi-pass-distillation](wiki/wiki/concepts/multi-pass-distillation.md)
+- [mvp-scope](wiki/wiki/concepts/mvp-scope.md)
+- [pipeline-operator](wiki/wiki/concepts/pipeline-operator.md)
+- [purpose-steering](wiki/wiki/concepts/purpose-steering.md)
+- [research-to-implementation-pipeline](wiki/wiki/concepts/research-to-implementation-pipeline.md)
+- [semantic-deduplication](wiki/wiki/concepts/semantic-deduplication.md)
+- [two-stage-ingestion](wiki/wiki/concepts/two-stage-ingestion.md)
+- [wiki-vs-context-engine](wiki/wiki/concepts/wiki-vs-context-engine.md)
+
+## Synthesis
+- [evolving-thesis](wiki/wiki/synthesis/evolving-thesis.md)
+- [project-brief](wiki/wiki/synthesis/project-brief.md)
+- [project-details](wiki/wiki/synthesis/project-details.md)
+
+## Meta
+- [index](distill-wiki-pipeline/wiki/wiki/index.md)
+- [log](distill-wiki-pipeline/wiki/wiki/log.md)

@@ -1,5 +1,0 @@
-- ## Token Control Systems in Web Dialogues vs. API Calls
-- ### Core Advantages of API Calls:
-  - Complete customization of context.
-  - Precise token usage control.
-  - Support for intelligent memory management techniques such as summarization and information extraction.

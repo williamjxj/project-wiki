@@ -1,10 +1,10 @@
 ---
 type: llm-chat
 source: claude
-topic: 04-summary
+topic: "Karpathy Autoresearch"
 date: '2026-05-27'
-status: pending
-question: random question
+status: ingested
+question: "Explain the Karpathy autoresearch pattern and how it applies to multi-LLM research workflow"
 ---
 
 ## 🍆 Karpathy Autoresearch
