@@ -45,6 +45,24 @@ Fixed 3 warnings: added `[[llm-wiki-paradigm]]` to mem-weaver-architecture Relat
 
 Processed raw/web/rag-graphrag-to-llm-knowledge-runtime.md. First web source ingested. Created source page, created [[llm-wiki-paradigm]] and [[knowledge-governance]] concept pages, updated [[memory-synthesis-vs-rag]] with LLM Wiki paradigm comparison, updated [[evolving-thesis]] with knowledge governance gaps and hallucination write-back risk.
 
+## [2026-05-29] export | synthesis cycle 2
+Exported [[project-brief]] (cycle 2, 28 sources) and [[project-details]] (first-ever deep analysis) with `status: current`. Key additions vs cycle 1: as-built status table, firm/open decisions tables, comparison matrix across 5 providers, prioritized recommendations, and risk assessment. [[project-details]] adds source map, concept maturity table, deep analysis with epistemology and hallucination write-back risk, and 8-item recommendation roadmap.
+
+## [2026-05-29] lint | 3 warnings: 3 fixed
+
+Ran full lint pass. Findings and fixes:
+- **W1 (HIGH)** — `mvp-scope.md` had duplicated sections (merge artifact). Merged into single Consensus/Divergence/Decision page.
+- **W2 (MEDIUM)** — 9 core concepts missing from [[evolving-thesis]]: [[compounding-knowledge-layer]], [[decision-records]], [[implementation-readiness]], [[llm-outputs-as-synthetic-sources]], [[multi-pass-distillation]], [[mvp-scope]], [[purpose-steering]], [[semantic-deduplication]], [[wiki-vs-context-engine]]. Added wikilinks to Multi-LLM workflow and Pipeline operator sections.
+- **W3 (LOW)** — [[llm-outputs-as-synthetic-sources]] had only 1 inbound link (≤1 threshold). Cross-linked from [[dual-llm-memory-pipeline]] and [[mem-weaver-architecture]].
+
+All 3 warnings fixed.
+
+## [2026-05-29] tracking fix | 4 orphaned sources registered
+Reconciled 4 sources that had source pages and concept references but were missing from index.md, log.md, and evolving-thesis tracking: [[chatgpt-llm-based-project-workflow]], [[claude-multi-llm-research-synthesis-workflow]], [[gemini-llm-wiki-multi-agent]], [[2026-05-25-cluade-pipeline-plan]]. Updated index.md (External perspectives + Implementation specs), evolving-thesis (workflow section + pipeline operator section), and count (24→28).
+
+## [2026-05-29] ingest | notebooklm-dual-llm-architecture-design
+Processed raw/llm/2026-04-21-notebooklm-dual-llm-architecture-design.md. First NotebookLM source. Created source page, added to [[dual-llm-memory-pipeline]] and [[mem-weaver-architecture]], updated evolving-thesis with SQLite+FTS5 validation note.
+
 ## [2026-05-24] lint | 28 warnings found, 28 fixed
 
 Applied all approved lint fixes:

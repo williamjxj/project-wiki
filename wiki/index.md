@@ -9,6 +9,7 @@
 - [[chatgpt-retrieval-vs-synthesis]] — ChatGPT research on RAG vs Karpathy LLM-wiki hybrid memory
 - [[gemini-llm-memory-research]] — Gemini hierarchical memory synthesis with value gate and index routing
 - [[chatgpt-api-token-context-management]] — API vs web UI context control (enables custom memory)
+- [[notebooklm-dual-llm-architecture-design]] — NotebookLM validates dual-LLM pipeline; recommends SQLite+FTS5 over ChromaDB, quantifies 80–90% token savings
 
 ### v2 — Product & architecture
 - [[claude-second-brain-prd]] — Original 12-step second brain product requirements
@@ -26,6 +27,7 @@
 - [[claude-chat-app-frontend-design]] — Next.js SSE chat + WikiSidebar design
 - [[claude-mcp-server-design]] — stdio MCP with shared memory_api
 - [[claude-mcp-server-plan]] — MCP ten-task implementation plan
+- [[2026-05-25-cluade-pipeline-plan]] — Shared pipeline core with Open WebUI Pipelines or custom FastAPI operator
 
 ### v3 — Roadmap & analysis
 - [[chatgpt-mem-weaver-v2-roadmap]] — v2 priorities: POST /chat, taxonomy, hybrid search status
@@ -36,6 +38,9 @@
 
 ### External perspectives
 - [[rag-graphrag-to-llm-knowledge-runtime]] — LLM Wiki paradigm: synthesis-at-ingest, three-layer architecture, knowledge governance
+- [[chatgpt-llm-based-project-workflow]] — LLM-based project workflow: context-fragmentation, semantic-deduplication, context-packs, MVP-scope
+- [[claude-multi-llm-research-synthesis-workflow]] — Multi-LLM research workflow: contradictions-tracking, human-review-gate, decision-records
+- [[gemini-llm-wiki-multi-agent]] — LLM-Wiki in multi-agent dev: compounding-knowledge-layer, two-stage-ingestion, closed-loop-harvesting
 
 ## Concepts
 
